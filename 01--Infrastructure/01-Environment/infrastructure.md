@@ -4,16 +4,14 @@ The following pre-requiste steps have been completed and are listed just for Lab
 This reference section covers:
   * Setup SkyTap Lab environment. 
      
-  * Setup of LDOS 1.2.0 Master / Worker Nodes.  
-  * Setup of LDOS 1.2.0 Installer.
+  * Setup of Hitachi Vantara Foundry 2.3 Master / Worker Nodes.  
   * Setup of HAProxy 2.4
-  * Setup of Pentaho Server 9.2
 
   * Generate SSH keys & deploy
 
 #### Downloads
 All files required for installation are available in the release folder and can be found in the link below.  
-https://hcpanywhere.hitachivantara.com/a/PWPVYtZj1UovY9VO/e52a0db2-ad14-4673-941b-c304c2b108b2?l
+
 
 <font color='green'>The required packages have been downloaded.</font>  
 
@@ -28,15 +26,14 @@ Domain Name: skytap.example
 
 | Server Name               | Host              |  IP address | OS               |
 | ------------------------- | ------------------| ----------- | ---------------- |
-| HAProxy                   | pentaho-server-1  | 10.0.0.1    | Unbuntu 18.04.4  |
-| LDOS 1.2.0 Master Node 1  | k8s-master-node-1 | 10.0.0.101  | CentOS 7.5       |    
-| LDOS 1.2.0 Master Node 2  | k8s-master-node-2 | 10.0.0.102  | CentOS 7.5       |
-| LDOS 1.2.0 Master Node 3  | k8s-master-node-3 | 10.0.0.103  | CentOS 7.5       |
-| Ansible Controller        | installer         | 10.0.0.99   | Unbuntu 18.04.6  | 
+| HAProxy                   | haproxy           | 10.0.0.1    | Unbuntu 20.04    |
+| Master Node 1             | k8s-master-node-1 | 10.0.0.101  | RHEL 8.4         |    
+| Master Node 2             | k8s-master-node-2 | 10.0.0.102  | RHEL 8.4         |
+| Ansible Controller        | installer         | 10.0.0.2    | Unbuntu 20.04    | 
 |
 
 VM sequence: 
-* LDOS Master 1-3 
+* Foundry Master 1-2 
 * HAProxy 
 * Ansible Controller 
 
@@ -44,19 +41,19 @@ VM sequence:
 
 ---
 
-### <font color='red'>LDOS 1.2.0 Master / Worker Nodes</font>  
+### <font color='red'> Master / Worker Nodes</font>  
 
-These servers were deployed as CentOS 7.5 Firstboot images.
+These servers were deployed with RHEL 8.4 Firstboot images.
 Each of the nodes in the cluster has been configured with a 'k8s' user with sudo priviliges.
 
-<font color='green'>The Master and Worker Nodes have been configured with the required user.</font>  
+<font color='green'>The Master Nodes have been configured with the required user.</font>  
 
 ``update all nodes:``
 ```
-sudo yum check-update
-sudo yum clean all
+sudo dnf check-update
+sudo dnf clean all
 sudo reboot
-sudo yum update
+sudo dnf update
 ```
 
 ---
@@ -89,7 +86,7 @@ Nano is a text editor.
 
 ``install editor (nano or vim):``
 ```
-sudo yum install -y nano
+sudo dnf install -y nano
 ```
 
 ---
@@ -116,7 +113,7 @@ Ctrl + x
 
 ---
 
-### <font color='red'>LDOS 1.2.0 Ansible Controller</font>  
+### <font color='red'>Ansible Controller</font>  
 
 This server has been configured with an 'installer' user with sudo privileges. 
 
