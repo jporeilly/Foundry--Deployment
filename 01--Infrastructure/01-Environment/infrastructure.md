@@ -12,6 +12,13 @@ This reference section covers:
 #### Downloads
 All files required for installation are available in the release folder and can be found in the link below.  
 
+You will need to register with Red Hat: https://developers.redhat.com/?source=sso 
+
+Once done, proceed over to the Red Hat Login page [https://sso.redhat.com/auth/realms/redhat-external/protocol/openid-connect/auth?response_type=code&client_id=https%3A%2F%2Fwww.redhat.com%2Fwapps%2Fugc-oidc&redirect_uri=https%3A%2F%2Fwww.redhat.com%2Fwapps%2Fugc%2Fsso%2Flogin&state=0ddf0ac4-31c0-4895-997f-ec3f963b8468&login=true&scope=openid] to complete your profile by providing other details such as your local address.
+
+ head out to the RHEL 8 download page and download the RHEL 8 ISO file for free. 
+
+
 
 <font color='green'>The required packages have been downloaded.</font>  
 
