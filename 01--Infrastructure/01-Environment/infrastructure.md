@@ -10,15 +10,17 @@ This reference section covers:
   * Generate SSH keys & deploy
 
 #### Downloads
-All files required for installation are available in the release folder and can be found in the link below.  
+All files required for installation are available in the release folder and can be found in the link below:
 
-You will need to register with Red Hat: https://developers.redhat.com/?source=sso 
+<em>RHEL 8.4</em>
 
-Once done, proceed over to the Red Hat Login page [https://sso.redhat.com/auth/realms/redhat-external/protocol/openid-connect/auth?response_type=code&client_id=https%3A%2F%2Fwww.redhat.com%2Fwapps%2Fugc-oidc&redirect_uri=https%3A%2F%2Fwww.redhat.com%2Fwapps%2Fugc%2Fsso%2Flogin&state=0ddf0ac4-31c0-4895-997f-ec3f963b8468&login=true&scope=openid] to complete your profile by providing other details such as your local address.
+* You will need to register as a [Developer with Red Hat](https://developers.redhat.com/?source=sso) 
 
- head out to the RHEL 8 download page and download the RHEL 8 ISO file for free. 
+* Once done, proceed over to the [Red Hat Login page](https://sso.redhat.com/auth/realms/redhat-external/protocol/openid-connect/auth?response_type=code&client_id=https%3A%2F%2Fwww.redhat.com%2Fwapps%2Fugc-oidc&redirect_uri=https%3A%2F%2Fwww.redhat.com%2Fwapps%2Fugc%2Fsso%2Flogin&state=0ddf0ac4-31c0-4895-997f-ec3f963b8468&login=true&scope=openid) to complete your profile by providing other details such as your address.
 
+* Download the [RHEL 8.4 ISO](https://developers.redhat.com/products/rhel/download#assembly-field-downloads-page-content-61451?source=sso) file. 
 
+<em>Hitachi Vantara Foundry 2.3</em>
 
 <font color='green'>The required packages have been downloaded.</font>  
 
