@@ -24,12 +24,12 @@ The SkyTap Lab environment is configured with:
 SkyTap DNS: 10.0.0.254 - This is automatically assigned.  
 Domain Name: skytap.example  
 
-| Server Name               | Host              |  IP address | OS               |
-| ------------------------- | ------------------| ----------- | ---------------- |
-| HAProxy                   | haproxy           | 10.0.0.1    | Unbuntu 20.04    |
-| Master Node 1             | k8s-master-node-1 | 10.0.0.101  | RHEL 8.4         |    
-| Master Node 2             | k8s-master-node-2 | 10.0.0.102  | RHEL 8.4         |
-| Ansible Controller        | installer         | 10.0.0.2    | Unbuntu 20.04    | 
+| Server Name         | Host              |  IP address | OS              | User      | Password |
+| --------------------| ------------------| ----------- | --------------- | ----------| ---------|
+| HAProxy             | haproxy           | 10.0.0.1    | Unbuntu 20.04   | haproxy   | 
+| Master Node 1       | k8s-master-node-1 | 10.0.0.101  | RHEL 8.4        | k8s       | lumada   |
+| Master Node 2       | k8s-master-node-2 | 10.0.0.102  | RHEL 8.4        | k8s       | lumada   |sudo dnf check-update
+| Ansible Controller  | installer         | 10.0.0.2    | Unbuntu 20.04   | installer |
 |
 
 VM sequence: 
