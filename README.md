@@ -6,6 +6,7 @@ DataOps unlocks business value by operationalizing data management with automati
 #### <font color='red'>Module 01 - Infrastructure</font>
 * Configure SkyTap Lab environment
 * Configure RHEL 8.4 Master Nodes
+* Configure SSH connections
 
 #### <font color='red'>Module 02 - Pre-flight</font>
 * Download Kubespray 1.24

@@ -1,8 +1,8 @@
 ## <font color='red'>Preflight - Hardware & Utils</font>  
 
-The following playbooks configure the cluster nodes and installs k8s-1.18.10 using kubespray-2.14.
+The following playbooks configure the cluster nodes and installs k8s-1.21.10 using kubespray-2.14.
 
-Prerequisites for the CentOS7 machines:
+Prerequisites for the RHEL 8.4 machines:
 * A public key generated on your Ansible Controller
 * Key copied to hosts
 * SSH passwordless access on Nodes with root permissions
@@ -27,7 +27,7 @@ The following playbooks are run:
 * Unpacks kubespray-2.14
 
 #### cluster.yml
-* installs and configures k8s-1.18.10
+* installs and configures k8s-1.21.10
 
 ---
 
@@ -55,7 +55,7 @@ sudo python3 -m pip install --upgrade requests
 ---
 
 <em>Define the playbook - extra-vars.yml</em>   
-Kubespray has a bunch a defualt values that need to be replaced by the required values defined a s placeholders in the env.properties file.
+Kubespray has a bunch a default values that need to be replaced by the required values defined a s placeholders in the env.properties file.
 
 <font color='green'>The extra-vars.yml has been created.</font>
 
@@ -68,8 +68,8 @@ sudo cat extra-vars.yml
 ``edit the env.properties file and enter the following values:``
 ```
 installer_node_hostname=installer.skytap.example
-installer_node_ip=10.0.0.99
-cluster_node_hostname=pentaho-server-1.skytap.example
+installer_node_ip=10.0.0.2
+cluster_node_hostname=haproxy.skytap.example
 cluster_node_ip=10.0.0.1
 pem_file_name=id_rsa
 ansible_user=k8s
