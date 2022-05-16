@@ -9,7 +9,7 @@ DataOps unlocks business value by operationalizing data management with automati
 * Configure SSH connections
 
 #### <font color='red'>Module 02 - Pre-flight</font>
-* Download Kubespray 1.24
+* Download Kubespray 2.17.1
 * Configure env.properties
 * Configure extra-vars.yml
 * Configure hosts-skytap.yml
