@@ -5,8 +5,8 @@
   gather_facts: true
   vars:
     installer_home: /installers
-    release: kubespray-release-2.14
-    version: release-2.14
+    release: kubespray-release-2.17.1
+    version: release-2.17.1
     ansible_python_interpreter: /usr/bin/python3
   
   tasks:
