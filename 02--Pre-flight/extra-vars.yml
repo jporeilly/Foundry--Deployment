@@ -39,7 +39,7 @@ registry_domain: installer.skytap.example
 registry_port: 5000
 
 # external load balancer for k8s masters
-apiserver_loadbalancer_domain_name: "pentaho-server-1.skytap.example"
+apiserver_loadbalancer_domain_name: "haproxy.skytap.example"
 
 # =====  DNS ===== 
 # Which name server are you using?
@@ -48,8 +48,3 @@ apiserver_loadbalancer_domain_name: "pentaho-server-1.skytap.example"
 change_dns: true
 #dns_server: 169.254.169.253 # aws private dns
 dns_server: 10.0.0.254 # SkyTap DNS
-
-# =====  LDOS ===== 
-nfs_host: 10.0.0.1
-nfs_path: /data/pdi
-install_type: LDOS

@@ -1,6 +1,6 @@
 ## <font color='red'>Preflight - Hardware & Utils</font>  
 
-The following playbooks configure the cluster nodes and installs k8s-1.21.10 using kubespray-2.14.
+The following playbooks configure the cluster nodes and installs k8s-1.21.6 using kubespray-2.17.1.
 
 Prerequisites for the RHEL 8.4 machines:
 * A public key generated on your Ansible Controller
@@ -24,10 +24,10 @@ The following playbooks are run:
 
 #### download_kubespray.yml
 * Create the release directory
-* Unpacks kubespray-2.14
+* Unpacks kubespray-2.17.1
 
 #### cluster.yml
-* installs and configures k8s-1.21.10
+* installs and configures k8s-1.21.6
 
 ---
 
@@ -108,7 +108,7 @@ sudo mkdir mycluster
 cd ..
 sudo chown -R installer mycluster
 sudo cp -rfp sample mycluster
-declare -a IPS=(10.0.0.101 10.0.0.102 10.0.0.103)
+declare -a IPS=(10.0.0.101 10.0.0.102)
 CONFIG_FILE=inventory/mycluster/hosts.yaml python3 contrib/inventory_builder/inventory.py ${IPS[@]}
 ```
 ``check inventory/mycluster/hosts.yaml``
