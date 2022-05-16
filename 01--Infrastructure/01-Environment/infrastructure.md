@@ -14,6 +14,8 @@ All files required for installation are available in the release folder and can 
 
 <em>RHEL 8.4</em>
 
+RedHat operates a subscription model.  You can download and install the OS for free, however, unless you purchase a subscription, you will not be able to update
+
 * You will need to register as a [Developer with Red Hat](https://developers.redhat.com/?source=sso) 
 
 * Once done, proceed over to the [Red Hat Login page](https://sso.redhat.com/auth/realms/redhat-external/protocol/openid-connect/auth?response_type=code&client_id=https%3A%2F%2Fwww.redhat.com%2Fwapps%2Fugc-oidc&redirect_uri=https%3A%2F%2Fwww.redhat.com%2Fwapps%2Fugc%2Fsso%2Flogin&state=0ddf0ac4-31c0-4895-997f-ec3f963b8468&login=true&scope=openid) to complete your profile by providing other details such as your address.
@@ -24,6 +26,11 @@ All files required for installation are available in the release folder and can 
 ```
 # subscription-manager register
 ```
+After registration, use the following command to attach any available subscriptions that match the current system.
+```
+# subscription-manager attach --auto
+```
+Note: Check that your subscriptions are activated in Red Hat.
 
 <em>Hitachi Vantara Foundry 2.3</em>
 
@@ -40,10 +47,11 @@ Domain Name: skytap.example
 
 | Server Name         | Host              |  IP address | OS              | User      | Password |
 | --------------------| ------------------| ----------- | --------------- | ----------| ---------|
-| HAProxy             | haproxy           | 10.0.0.1    | Unbuntu 20.04   | haproxy   |          |  
+| HAProxy             | haproxy           | 10.0.0.1    | Unbuntu 20.04   | haproxy   | lumada   |  
 | Master Node 1       | k8s-master-node-1 | 10.0.0.101  | RHEL 8.4        | k8s       | lumada   |
 | Master Node 2       | k8s-master-node-2 | 10.0.0.102  | RHEL 8.4        | k8s       | lumada   |
-| Ansible Controller  | installer         | 10.0.0.2    | Unbuntu 20.04   | installer |          |
+| Ansible Controller  | installer         | 10.0.0.2    | Unbuntu 20.04   | installer | lumada  
+ |
 |
 
 VM sequence: 
@@ -68,6 +76,11 @@ sudo dnf check-update
 sudo dnf clean all
 sudo reboot
 sudo dnf update
+```
+
+``check RHEL version:``
+```
+cat /etc/redhat-release
 ```
 
 ---
