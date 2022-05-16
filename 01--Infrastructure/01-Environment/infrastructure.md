@@ -50,8 +50,7 @@ Domain Name: skytap.example
 | HAProxy             | haproxy           | 10.0.0.1    | Unbuntu 20.04   | haproxy   | lumada   |  
 | Master Node 1       | k8s-master-node-1 | 10.0.0.101  | RHEL 8.4        | k8s       | lumada   |
 | Master Node 2       | k8s-master-node-2 | 10.0.0.102  | RHEL 8.4        | k8s       | lumada   |
-| Ansible Controller  | installer         | 10.0.0.2    | Unbuntu 20.04   | installer | lumada  
- |
+| Ansible Controller  | installer         | 10.0.0.2    | Unbuntu 20.04   | installer | lumada   |
 |
 
 VM sequence: 
@@ -104,6 +103,18 @@ id k8s
 ``check 'k8s' user on any master node:``
 ```
 ls /home
+```
+
+---
+
+<em> Enable SSH Connections</em>
+
+``enable OpenSSH server to communicate through the firewall:``
+```
+sudo firewall-cmd --permanent --add-service ssh
+sudo firewall-cmd --reload
+sudo systemctl enable --now sshd
+sudo systemctl reload sshd
 ```
 
 ---
@@ -343,7 +354,6 @@ Note: keys are located in .ssh directory. 2 keys: id_rsa (private) id_rsa.pub (p
 ```
 ssh-copy-id k8s@10.0.0.101
 ssh-copy-id k8s@10.0.0.102
-ssh-copy-id k8s@10.0.0.103
 ```
 Password: lumada
 Note: this will copy over both the private and public keys.
@@ -364,25 +374,25 @@ In this workshop a locally, self-certified Docker Registry will be created on ``
 
 ---
 
-#### <font color='red'>HA-Proxy - Pentaho Server 9.2</font>  
+#### <font color='red'>HA-Proxy</font>  
 
-This server has been configured with an 'pentaho' user with sudo privileges.  
+This server has been configured with an 'haproxy' user with sudo privileges.  
 
-<font color='green'>Pentaho server has been installed and configured.</font>  
+<font color='green'>HAProxy server has been installed and configured.</font>  
 
 ``update (log in as root):``
 ```
 apt update -y
 ```
-``add an 'pentaho' user:``
+``add an 'haproxy' user:``
 ```
-adduser pentaho
+adduser haproxy
 ```
 Note: password is 'lumada'  
 
-``add 'pentaho' to sudo group:``
+``add 'haproxy' to sudo group:``
 ```
-sudo usermod -aG sudo pentaho
+sudo usermod -aG sudo haproxy
 ```
 ``check the assigned groups:``
 ```
@@ -390,9 +400,9 @@ groups
 ```
 ``or for the ids:``
 ```
-id pentaho
+id haproxy
 ```
-``check 'pentaho' user:``
+``check 'haproxy' user:``
 ```
 ls /home
 ```
@@ -474,7 +484,7 @@ sudo mv haproxy.cfg  haproxy.cfg.bak
 ```
 ``copy over 01-Infrastructure/01-Environment/haproxy.cfg to /etc/haproxy:``
 ```
-cd /installers/LDOS-Workshop/
+cd /installers/Workshop-Foundry/
 
 ```
 ``restart haproxy:``
@@ -484,12 +494,5 @@ sudo systemctl restart haproxy
 ``test the installation:``
 
    > browse to:  http://localhost:8000/haproxy?stats
-
----
-
-#### <font color='red'>Data Volume</font>  
-
-You will require a /data volume which gets mapped to LDOS, as a Pentaho File Repository.
-NFS server has already been installed.
 
 ---
