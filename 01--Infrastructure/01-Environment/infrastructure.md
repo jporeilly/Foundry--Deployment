@@ -9,6 +9,8 @@ This reference section covers:
 
   * Generate & deploy SSH keys
 
+---
+
 #### Downloads
 All files required for installation are available in the release folder and can be found in the link below:
 
@@ -36,11 +38,13 @@ Note: Check that your subscriptions are activated in Red Hat.
 
 <em>Hitachi Vantara Foundry 2.4</em>
 
-<font color='green'>The required packages have been downloaded.</font>  
+<font color='teal'>The required packages have been downloaded.</font> 
+
+
 
 ---
 
-### <font color='red'>Skytap Lab</font>  
+<font color='red'>Skytap Lab</font>  
 
 The SkyTap Lab environment is configured with: 
 
@@ -64,12 +68,12 @@ VM sequence:
 
 ---
 
-### <font color='red'> Master Nodes</font>  
+<em>Master Nodes</em>  
 
 These servers were deployed with RHEL 8.4 Firstboot images.
 Each of the nodes in the cluster has been configured with a 'k8s' user with sudo priviliges.
 
-<font color='green'>The Master Nodes have been configured with the required user.</font>  
+<font color='teal'>The Master Nodes have been configured with the required user.</font>  
 
 ``update all nodes:``
 ```
@@ -218,7 +222,7 @@ sudo -v
 
 ---
 
-### <font color='red'>Other Required Packages on Ansible Controller</font>  
+<em>Other Required Packages on Ansible Controller</em>  
 
 Enusre that the following packages are also installed and configured:
 * openssh server
@@ -311,7 +315,7 @@ git --version
 
 ---
 
-<em>install Visual Studio Code:</em> 
+<em>Visual Studio Code:</em> 
 
 ``Visual Studio Code is used for workshop Lab Guide:``
 ```
@@ -327,7 +331,7 @@ code
 
 ---
 
-<em>install tree:</em> 
+<em>tree:</em> 
 
 ``to browse directories:``
 ```
@@ -338,12 +342,12 @@ reboot
 
 ---
 
-#### <font color='red'>SSH Keys</font>  
+<em>SSH Keys</em>  
 
-Generate the required SSH keys to connect to LDOS nodes.  
+Generate the required SSH keys to connect to cluster nodes.  
 You will need the IPs of the Cluster Nodes - refer to table above.
 
-<font color='green'>The SSH keys have been generated and copied to all Nodes.</font>  
+<font color='teal'>The SSH keys have been generated and copied to all Nodes.</font>  
 
 ``generate ssh key:``
 ```
@@ -352,7 +356,7 @@ ssh-keygen -t rsa
 ```
 Note: keys are located in .ssh directory. 2 keys: id_rsa (private) id_rsa.pub (public)
 
-``copy over key to k8s user on LDOS nodes:``
+``copy over key to k8s user on cluster nodes:``
 ```
 ssh-copy-id k8s@10.0.0.101
 ssh-copy-id k8s@10.0.0.102
@@ -371,7 +375,7 @@ exit
 
 #### <font color='red'>Docker Registry Volume</font>  
 
-Installation of the Foundry Platform and LDOS requires that the images are uploaded to a Regsitry to maintain versioning.   
+Installation of the Foundry Platform requires that the images are uploaded to a Regsitry to maintain versioning.   
 In this workshop a locally, self-certified Docker Registry will be created on ``/installers`` volume. 
 
 ---
@@ -437,7 +441,7 @@ sudo -v
 
 ---
 
-#### <font color='red'>HA Proxy</font>  
+<em>HA Proxy</em>  
 
 Install the latest HAProxy using a PPA.
 
