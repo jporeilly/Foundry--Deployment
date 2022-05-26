@@ -7,7 +7,7 @@ In this lab we're going to:
 
 #### If you're new to Ansible you may want to take the course: [LDS3013S](https://learning.lumada.hitachivantara.com/course/introduction-to-ansible-lds3013s) - Introduction to Ansible.
 
-<font color='green'>Ansible has been installed and configured - Reference only.</font>
+<font color='teal'>Ansible has been installed and configured - Reference only.</font>
 
 ---
 
