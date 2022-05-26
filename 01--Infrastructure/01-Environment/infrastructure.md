@@ -4,10 +4,10 @@ The following pre-requiste steps have been completed and are listed just for Lab
 This reference section covers:
   * Setup SkyTap Lab environment. 
      
-  * Setup of Hitachi Vantara Foundry 2.3 Master / Worker Nodes.  
-  * Setup of HAProxy 2.4
+  * Setup of Hitachi Vantara Foundry 2.4 Master Nodes.  
+  * Setup of HAProxy 2.5.7
 
-  * Generate SSH keys & deploy
+  * Generate & deploy SSH keys
 
 #### Downloads
 All files required for installation are available in the release folder and can be found in the link below:
@@ -32,7 +32,9 @@ After registration, use the following command to attach any available subscripti
 ```
 Note: Check that your subscriptions are activated in Red Hat.
 
-<em>Hitachi Vantara Foundry 2.3</em>
+---
+
+<em>Hitachi Vantara Foundry 2.4</em>
 
 <font color='green'>The required packages have been downloaded.</font>  
 
@@ -45,12 +47,12 @@ The SkyTap Lab environment is configured with:
 SkyTap DNS: 10.0.0.254 - This is automatically assigned.  
 Domain Name: skytap.example  
 
-| Server Name         | Host              |  IP address | OS              | User      | Password |
-| --------------------| ------------------| ----------- | --------------- | ----------| ---------|
-| HAProxy             | haproxy           | 10.0.0.1    | Unbuntu 20.04   | haproxy   | lumada   |  
-| Master Node 1       | k8s-master-node-1 | 10.0.0.101  | RHEL 8.4        | k8s       | lumada   |
-| Master Node 2       | k8s-master-node-2 | 10.0.0.102  | RHEL 8.4        | k8s       | lumada   |
-| Ansible Controller  | installer         | 10.0.0.2    | Unbuntu 20.04   | installer | lumada   |
+| Server Name         | Host               |  IP address | OS              | User      | Password |
+| --------------------| -------------------| ----------- | --------------- | ----------| ---------|
+| HAProxy             | haproxy            | 10.0.0.1    | Unbuntu 20.04   | haproxy   | lumada   |  
+| Master Node 1       | k8s-master-node-01 | 10.0.0.101  | RHEL 8.4        | k8s       | lumada   |
+| Master Node 2       | k8s-master-node-02 | 10.0.0.102  | RHEL 8.4        | k8s       | lumada   |
+| Ansible Controller  | installer          | 10.0.0.2    | Unbuntu 20.04   | installer | lumada   |
 |
 
 VM sequence: 
@@ -62,7 +64,7 @@ VM sequence:
 
 ---
 
-### <font color='red'> Master / Worker Nodes</font>  
+### <font color='red'> Master Nodes</font>  
 
 These servers were deployed with RHEL 8.4 Firstboot images.
 Each of the nodes in the cluster has been configured with a 'k8s' user with sudo priviliges.
@@ -225,7 +227,7 @@ Enusre that the following packages are also installed and configured:
 * visual studio code - just for training purposes
 * tree - visualize directories
 
-<font color='green'>The packages have been installed and configured.</font>  
+<font color='teal'>The packages have been installed and configured.</font>  
 
 ---
 
@@ -236,7 +238,7 @@ ssh -V
 ```
 Note: you are currently only able to connect as a client to SSH servers
 ```
-sudo apt install openssh-server 
+sudo dnf install openssh-server 
 ```
 ``verify service is running:``
 ```
@@ -296,7 +298,7 @@ pip2 --version
 ---
 
 <em>install git:</em>    
-used to access the LDOS-Workshop Git repository.  
+used to access the Foundry--Deployment Git repository.  
 
 ``install Git:``
 ```
@@ -378,7 +380,7 @@ In this workshop a locally, self-certified Docker Registry will be created on ``
 
 This server has been configured with an 'haproxy' user with sudo privileges.  
 
-<font color='green'>HAProxy server has been installed and configured.</font>  
+<font color='teal'>HAProxy server has been installed and configured.</font>  
 
 ``update (log in as root):``
 ```
@@ -443,7 +445,7 @@ Install the latest HAProxy using a PPA.
 
  Note: use the wizard to generate commands.
 
-<font color='green'>HA Proxy server has been installed and configured.</font>
+<font color='teal'>HA Proxy server has been installed and configured.</font>
 
 ``enable PPA (log in as root):``
 ```
