@@ -13,43 +13,17 @@
       tags: 
        - info
 
-    # Update all packages
-    - name: Yum update
-      raw: yum update -y
-      when: ansible_distribution == "CentOS"
+   # Update Packages
+    - name: Update all installed packages using YUM module
+      yum:
+       name: '*'
+       state: latest
+       update_cache: yes
+       update_only: yes
+      register: yum_update_status
       tags: 
-       - install
-
-    # Install extra packages
-    - name: Yum install epel
-      raw: yum install -y epel-release
-      when: ansible_distribution == "CentOS"
-      tags: 
-       - install
-       - never
+       - updates
     
-    # Configure various Linux networking and system settings
-    - name: Get /etc/sysctl.conf
-      shell: cat /etc/sysctl.conf | grep max_map_count 
-      ignore_errors: true
-      register: max_map_count
-      tags: 
-       - elastic
-
-    # Elasticsearch requires a max map count > 262144
-    # Details: https://www.elastic.co/guide/en/elasticsearch/reference/current/vm-max-map-count.html
-    - name: Expand max_map_count 
-      shell: |
-        cp /etc/sysctl.conf /etc/sysctl.conf.{{ 10000 | random }}.bak
-        echo "vm.max_map_count=262144" >> /etc/sysctl.conf
-        sysctl -p
-      register: map_max_update
-      when: 
-        - max_map_count.stdout | int < 262144 
-        # May need check if large enough 
-      tags: 
-       - elastic
-
     # Retrieve sudoers path
     - name: Get sudoers secure_path
       shell: cat /etc/sudoers | grep secure_path
@@ -97,7 +71,7 @@
 
 # Install Helm3 on all hosts 
 - name: Install helm on all hosts 
-  hosts:  all
+  hosts: 
   become: true
   become_method: sudo
   become_user: root
@@ -127,7 +101,7 @@
       tags: 
        - helm
 
-# Switch to Master Node 1
+# Switch to Master Node 1 as root
 # Configure kubeconfig on cluster for {{ ansible_user }}
 - name: Prepare Kubeconfig for {{ ansible_user }}
   hosts:  "{{ groups['kube-master'][0] }}"
@@ -143,10 +117,12 @@
         path: ~/.kube
         state: directory
       become: false
-      
+
+    # Copy config to {{ansible_user}} ~/.kube directory
     - name: Copy config to {{ ansible_user }} home
       shell: "cp ~/.kube/config /home/{{ ansible_user }}/.kube/"
 
+    # Take ownership
     - name: Change config ownership to {{ ansible_user }}
       shell: "chown -R {{ ansible_user }}:{{ ansible_user }} /home/{{ ansible_user }}/.kube/config"
 
