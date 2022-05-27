@@ -1,4 +1,4 @@
-# Download & Install Kubespray 2.14 - Kubernetes 1.18
+# Download & Install Kubespray 2.17 - Kubernetes 1.18
 - name: Install Kubespray
   hosts: "{{ groups['installer'][0] }}"
   become: false
