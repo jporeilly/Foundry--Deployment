@@ -242,7 +242,7 @@ ssh -V
 ```
 Note: you are currently only able to connect as a client to SSH servers
 ```
-sudo dnf install openssh-server 
+sudo apt install openssh-server 
 ```
 ``verify service is running:``
 ```
