@@ -1,3 +1,4 @@
+---
 # Preflight - Infrastructure 
 - name: Configure Cluster Nodes
   hosts: "{{ groups['kube-node'] }}"
@@ -33,18 +34,25 @@
        - info
    
    # Update Packages
-   - name: Update apt repo and cache on Cluster Nodes
-     yum: 
-      name: "*"
+   - name: Update all installed packages using YUM module
+     yum:
+      name: '*'
       state: latest
       update_cache: yes
+      update_only: yes
+     register: yum_update_status
      tags: 
-       - updates
+      - updates
 
-   # Check if reboot is required
-   - name: Check if a reboot is needed on all servers
-     register: reboot_required_file
-     stat: path=/var/run/reboot-required get_md5=no  
+   # Remove legacy packages
+   - name: Remove legacy packages
+     yum:
+      autoremove: yes
+
+   # Check for reboot
+   - name: Reboot when packages were updated
+     reboot:
+     when: yum_update_status.changed   
 
    # Install Commmon Packages
    - name: Install Common Packages
