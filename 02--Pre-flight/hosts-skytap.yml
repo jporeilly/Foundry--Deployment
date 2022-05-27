@@ -38,4 +38,7 @@ all:
       hosts: {}
     installer:
       hosts:
-        installer.skytap.example:        
+        installer.skytap.example: 
+    haproxy:
+      hosts:
+        haproxy.skytap.example:           
