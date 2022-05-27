@@ -6,8 +6,7 @@
   gather_facts: true
   vars:
     installer_home: /installers
-    foundry_home: /installers/Foundry-Control-Plane-2.2.1/Foundry
-    foundry_root: Foundry-Control-Plane-2.2.1
+    foundry_root: Foundry-2.4
     metrics_home: /installers/metrics-addon-1.0.0
     metrics_root: metrics-addon-1.0.0
     logs_dir: /installers/logs
@@ -53,7 +52,7 @@
     # Check for Foundry directory
     - name: Check if the 'Foundry' directory exists
       stat:
-        path: "{{ foundry_home }}"
+        path: "{{ installer_home }}/{{ foundry_home }}"
       register: foundry
       tags: 
        - info
@@ -66,13 +65,13 @@
     # Create Foundry install directory - if required
     - name: Create 'Foundry' directory
       file:
-        path: "{{ foundry_home }}"
+        path: "{{ installer_home }}/{{ foundry_home }}"
         state: directory
       when: foundry.stat.exists == false
       tags: 
        - info
 
-    # Unarchive Foundry-Control-Plane-2.2.1.tgz
+    # Unarchive Foundry-Control-Plane-2.4.tgz
     - name: Unarchive {{ foundry_root }}.tgz
       unarchive:
         src: "{{ installer_home }}/{{ foundry_root }}.tgz"
