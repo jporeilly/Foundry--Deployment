@@ -30,6 +30,7 @@ all:
     etcd:
       hosts:
         master-node-01.skytap.example:
+    
     k8s-cluster:
       children:
         kube-master:
