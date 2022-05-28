@@ -71,7 +71,7 @@
 
 # Install Helm3 on all hosts 
 - name: Install helm on all hosts 
-  hosts: 
+  hosts: all
   become: true
   become_method: sudo
   become_user: root
@@ -143,13 +143,8 @@
         name: jq
       when: ansible_distribution == "Ubuntu"
 
-    - name: Install jq
-      yum:
-        name: jq
-      when: ansible_distribution == "CentOS"
-
     - name: Install kubectl
-      raw: snap install kubectl --channel=1.18/stable --classic
+      raw: snap install kubectl --channel=1.21/stable --classic
 
     - name: Get local user home
       local_action: command echo $HOME
@@ -200,7 +195,7 @@
         msg: "{{ pods.stdout_lines }}"
 
 # Install Docker locally
-# Best practice not to run Docker as root, so 'installer' is added to docker group
+# Best practice not to run Docker as root, so user 'installer' is added to docker group
 - name: Install Docker
   hosts: "{{ groups['installer'][0] }}"
   become: true

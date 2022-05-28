@@ -48,7 +48,7 @@ Note: Check that your subscriptions are activated in Red Hat.
 
 The SkyTap Lab environment is configured with: 
 
-SkyTap DNS: 10.0.0.254 - This is automatically assigned.  
+SkyTap DNS: ``10.0.0.254`` - This is automatically assigned.  
 Domain Name: skytap.example  
 
 | Server Name         | Host               |  IP address | OS              | User      | Password |
@@ -161,7 +161,7 @@ Ctrl + x
 
 This server has been configured with an 'installer' user with sudo privileges. 
 
-<font color='green'>The Ansible Controller has been installed and configured.</font>  
+<font color='teal'>The Ansible Controller has been installed and configured.</font>  
 
 ``update (log in as root):``
 ```
