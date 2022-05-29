@@ -1,4 +1,4 @@
-## <font color='red'>Hitachi Vantara Foundry Platform 2.3</font>  
+## <font color='red'>Hitachi Vantara Foundry Platform 2.4</font>  
 
 DataOps unlocks business value by operationalizing data management with automation and collaboration. Lumada DataOps helps you build your DataOps practice for more business agility with an intelligent data operations platform.
 
@@ -21,7 +21,6 @@ DataOps unlocks business value by operationalizing data management with automati
 * Run install_foundry.yml playbook
 
 #### <font color='red'>Module 04 - Post Installation</font>
-* Licenses
 * Kiali
 * Prometheus
 * Grafana
@@ -36,5 +35,5 @@ DataOps unlocks business value by operationalizing data management with automati
 
 | Artifact                   | Date     |  
 | ---------------------------| ---------| 
-| Course released            | 25/06/22 | 
+| Course released            | 04/07/22 | 
 |
