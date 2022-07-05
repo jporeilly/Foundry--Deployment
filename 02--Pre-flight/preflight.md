@@ -37,7 +37,7 @@ This will update, install and configure the various required packages.
 ``run the playbook - pre-flight_hardware.yml:``
 ```
 cd /etc/ansible/playbooks
-ansible-playbook pre-flight_hardware.yml
+ansible-playbook preflight_hardware.yml
 ```
 Note the required vars:  
 - ansible_ssh_private_key_file: "~/.ssh/id_rsa"  
@@ -76,9 +76,9 @@ ansible_user=k8s
 ```
 ``to define the extra-vars.yml, execute:``
 ```
-./apply_env_properties.sh
+./env_properties.sh
 ```
-Note: You may have to change the permission: sudo chmod +ax apply_env_properties.sh  
+Note: You may have to change the permission: sudo chmod +ax env_properties.sh  
 
 ``check extra-vars.yml``
 

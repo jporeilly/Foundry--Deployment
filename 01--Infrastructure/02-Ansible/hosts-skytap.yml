@@ -1,12 +1,12 @@
 # hosts-skytap.yml
 all:
   hosts:
-    k8s-master-node-01.skytap.example:
+    master-node-01.skytap.example:
       ansible_host: 10.0.0.101
       ip: 10.0.0.101
       access_ip: 10.0.0.101
       ansible_user: k8s
-    k8s-master-node-02.skytap.example:
+    master-node-02.skytap.example:
       ansible_host: 10.0.0.102
       ip: 10.0.0.102
       access_ip: 10.0.0.102
@@ -25,12 +25,12 @@ all:
   children:
     kube-master:
       hosts:
-        k8s-master-node-01.skytap.example:
-        k8s-master-node-02.skytap.example:
+        master-node-01.skytap.example:
+        master-node-02.skytap.example:
     kube-node:
       hosts:
-        k8s-master-node-01.skytap.example:
-        k8s-master-node-02.skytap.example:
+        master-node-01.skytap.example:
+        master-node-02.skytap.example:
     etcd:
       hosts:
         k8s-master-node-01.skytap.example:
