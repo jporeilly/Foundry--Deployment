@@ -33,7 +33,7 @@ all:
         master-node-02.skytap.example:
     etcd:
       hosts:
-        k8s-master-node-01.skytap.example:
+        master-node-01.skytap.example:
     k8s-cluster:
       children:
         kube-master:
