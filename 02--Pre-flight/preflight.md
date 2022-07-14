@@ -103,7 +103,7 @@ There is a sample inventory in the inventory folder. You need to copy that and n
 
 ``copy inventory/sample as inventory/mycluster:``
 ```
-cd /installers/kubespray-release-2.14/inventory
+cd /installers/kubespray-release-2.17/inventory
 sudo mkdir mycluster
 cd ..
 sudo chown -R installer mycluster
