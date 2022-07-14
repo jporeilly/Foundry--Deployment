@@ -11,24 +11,7 @@ This reference section covers:
 
 ---
 
-#### Downloads
-All files required for installation are available in the release folder and can be found in the link below:
-
-<em>RHEL 8.4</em>
-
-
-
----
-
-<em>Hitachi Vantara Foundry 2.4</em>
-
-<font color='teal'>The required packages have been downloaded.</font> 
-
-
-
----
-
-<font color='red'>Skytap Lab</font>  
+### <font color='red'>Skytap Lab</font>  
 
 The SkyTap Lab environment is configured with: 
 
@@ -38,8 +21,8 @@ Domain Name: skytap.example
 | Server Name         | Host               |  IP address | OS              | User      | Password |
 | --------------------| -------------------| ----------- | --------------- | ----------| ---------|
 | HAProxy             | haproxy            | 10.0.0.1    | Ubuntu 20.04    | haproxy   | lumada   |  
-| Master Node 1       | k8s-master-node-01 | 10.0.0.101  | RHEL 8.4        | k8s       | lumada   |
-| Master Node 2       | k8s-master-node-02 | 10.0.0.102  | RHEL 8.4        | k8s       | lumada   |
+| Master Node 1       | k8s-master-node-01 | 10.0.0.101  | AlmaLinux 8.4   | k8s       | lumada   |
+| Master Node 2       | k8s-master-node-02 | 10.0.0.102  | AlmaLinux 8.4   | k8s       | lumada   |
 | Ansible Controller  | installer          | 10.0.0.2    | Ubuntu 20.04    | installer | lumada   |
 |
 
@@ -54,7 +37,7 @@ VM sequence:
 
 <em>Master Nodes</em>  
 
-These servers were deployed with RHEL 8.4 Firstboot images.
+These servers were deployed with AlmaLinux 8.4 Firstboot images.
 Each of the nodes in the cluster has been configured with a 'k8s' user with sudo priviliges.
 
 <font color='teal'>The Master Nodes have been configured with the required user.</font>  

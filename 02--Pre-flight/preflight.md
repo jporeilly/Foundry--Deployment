@@ -2,7 +2,7 @@
 
 The following playbooks configure the cluster nodes and installs k8s-1.21.6 using kubespray-2.17.1.
 
-Prerequisites for the RHEL 8.4 machines:
+Prerequisites for the AlmaLinux 8.4 machines:
 * A public key generated on your Ansible Controller
 * Key copied to hosts
 * SSH passwordless access on Nodes with root permissions
