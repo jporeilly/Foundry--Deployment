@@ -89,7 +89,7 @@
       - elastic
 
    - debug: 
-      var: "{{max_map_count.stdout}}"       
+      var: {{max_map_count}}      
    
    # easy option :)  Otherwise open Master / Worker ports for network - Calico 
    - name: Turn off firewall for kubernetes Install
