@@ -80,8 +80,7 @@
 
    # Register the max_map_count - Elasticsearch
    - name: Get /etc/sysctl.conf
-     ansible.builtin.shell:
-     cmd: cat /etc/sysctl.conf | grep max_map_count
+     ansible.builtin.command: cat /etc/sysctl.conf | grep max_map_count
      ignore_errors: true
      register: max_map_count
      tags: 
@@ -117,8 +116,7 @@
    
    # Check for DNS servers
    - name: Get dhcp/dhclient.conf
-     ansible.builtin.shell:
-     cmd: cat /etc/dhcp/dhclient.conf | grep domain-name-servers
+     ansible.builtin.command: cat /etc/dhcp/dhclient.conf | grep domain-name-servers
      ignore_errors: true
      register: dhcp_nameserver_entry
 
