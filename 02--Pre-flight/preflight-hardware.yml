@@ -84,7 +84,7 @@
      shell: |
        echo "vm.max_map_count=262144" >> /etc/sysctl.d/sysctl.conf
        sysctl -p
-     register: map_max_count
+     register: max_map_count
      tags: 
       - elastic
 
