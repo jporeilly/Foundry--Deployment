@@ -92,9 +92,6 @@
        echo "vm.max_map_count=262144" >> /etc/sysctl.d/sysctl.conf
        sysctl -p
      register: map_max_count
-     when: 
-      - max_map_count.stdout | int < 262144 
-        # May need check if large enough 
      tags: 
       - elastic
 
