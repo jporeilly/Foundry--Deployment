@@ -24,7 +24,7 @@
       - python3-setuptools
       - wget
 
-    ansible_python_interpreter: /usr/bin/python2
+    ansible_python_interpreter: /usr/bin/python3
  
   tasks:
    # Ping Nodes
@@ -50,7 +50,7 @@
       autoremove: yes
 
    # Check for reboot
-   - name: Reboot when packages were updated
+   - name: Reboot if packages are updated
      reboot:
      when: yum_update_status.changed   
 
