@@ -82,7 +82,6 @@
    - name: Get /etc/sysctl.d/sysctl.conf
      ansible.builtin.command: cat /etc/sysctl.d/sysctl.conf | grep max_map_count
      ignore_errors: true
-     register: max_map_count
      tags: 
       - elastic
 
@@ -92,7 +91,7 @@
      shell: |
        echo "vm.max_map_count=262144" >> /etc/sysctl.d/sysctl.conf
        sysctl -p
-     register: map_max_update
+     register: map_max_count
      when: 
       - max_map_count.stdout | int < 262144 
         # May need check if large enough 
@@ -101,12 +100,14 @@
 
    # Check the max_map_count - Elasticsearch
    - name: Get /etc/sysctl.d/sysctl.conf
-     ansible.builtin.command: cat /etc/sysctl.conf | grep max_map_count
-     
+     ansible.builtin.command: cat /etc/sysctl.d/sysctl.conf | grep max_map_count
      ignore_errors: true
      register: max_map_count
      tags: 
-      - elastic    
+      - elastic
+
+   - debug: 
+      msg: "The max_map_count is set to: {{ max_map_count }}"       
    
    # easy option :)  Otherwise open Master / Worker ports for network - Calico 
    - name: Turn off firewall for kubernetes Install
@@ -122,21 +123,6 @@
       path: /etc/hosts
       state: present
       line: '{{ansible_default_ipv4.address}}   {{inventory_hostname}}.local   {{inventory_hostname}}'
-   
-   # Check for DNS servers
-   #- name: Get dhcp/dhclient.conf
-   #  ansible.builtin.command: cat /etc/dhcp/dhclient.conf | grep domain-name-servers
-   #  ignore_errors: true
-   #  register: dhcp_nameserver_entry
-
-   # This file will rebuild the /etc/resolv.conf file on reboot.   
-   # Leverage the private DNS lookup of SkyTap
-   #- name: Override current DNS entries
-   #  shell: |
-    #    cp /etc/dhcp/dhclient.conf /etc/dhcp/dhclient.conf.{{ 10000 | random }}.bak
-    #    echo "supersede domain-name-servers {{ dns_server }};" >> /etc/dhcp/dhclient.conf
-    # register: dhcp_update       
-    # when: change_dns and ("dhcp_nameserver_entry is not defined" or "'{{ dns_server }}' not in dhcp_nameserver_entry.stdout")
    
    # Reboot the Nodes
    - name: Reboot the Nodes with all defaults
