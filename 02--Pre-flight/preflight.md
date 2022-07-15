@@ -14,7 +14,7 @@ The following playbooks are run:
 * Install common packages
 * Disable SELinux
 * Turn off firewall
-* Set hostname
+* Set max_map_count=262144
 * Reboot Nodes
 
 #### extra-vars.yml
