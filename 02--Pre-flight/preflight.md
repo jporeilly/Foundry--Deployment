@@ -31,13 +31,13 @@ The following playbooks are run:
 
 ---
 
-<em>Run the playbook - pre-flight_hardware.yml</em>  
+<em>Run the playbook - preflight-hardware.yml</em>  
 This will update, install and configure the various required packages.
 
-``run the playbook - pre-flight_hardware.yml:``
+``run the playbook - preflight_hardware.yml:``
 ```
 cd /etc/ansible/playbooks
-ansible-playbook preflight_hardware.yml
+ansible-playbook preflight-hardware.yml
 ```
 Note the required vars:  
 - ansible_ssh_private_key_file: "~/.ssh/id_rsa"  
