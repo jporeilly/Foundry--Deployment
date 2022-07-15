@@ -45,7 +45,7 @@ Note the required vars:
 - ansible_user: k8s  
 - change_dns: true  
 - dns_server: 10.0.0.254  <font color='green'> # SkyTap DNS </font> 
-- ansible_python_interpreter: /usr/bin/python  
+- ansible_python_interpreter: /usr/bin/python3  
 
 Note: if you are getting a mismatch on the urllib3 or chadet:
 ```
