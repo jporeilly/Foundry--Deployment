@@ -43,8 +43,6 @@ Note the required vars:
 - ansible_ssh_private_key_file: "~/.ssh/id_rsa"  
 - ansible_ssh_private_key_file_name: "id_rsa"  
 - ansible_user: k8s  
-- change_dns: true  
-- dns_server: 10.0.0.254  <font color='green'> # SkyTap DNS </font> 
 - ansible_python_interpreter: /usr/bin/python3  
 
 Note: if you are getting a mismatch on the urllib3 or chadet:
