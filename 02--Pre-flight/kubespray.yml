@@ -63,9 +63,9 @@
     - name: Re-Check if Kubespray has extracted
       stat:
         path: "{{ installer_home }}/{{release}}"
-      state: directory
-      recurse: yes
-      owner: installer  
+        state: directory
+        recurse: yes
+        owner: installer  
       tags: 
        - install
 
