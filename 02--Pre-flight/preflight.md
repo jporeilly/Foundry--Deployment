@@ -93,7 +93,7 @@ Kubespray provides:
 ``run the download_kubespray.yml playbook:``
 ```
 cd /etc/ansible/playbooks
-ansible-playbook -i hosts-skytap.yml -b -v kubespray.yml
+ansible-playbook -i hosts-skytap.yml -b kubespray.yml
 ```
 Note: check that the hosts-skytap.yml & extra-vars.yml have been copied.
 
