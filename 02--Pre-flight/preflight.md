@@ -82,7 +82,7 @@ Note: You may have to change the permission: sudo chmod +ax env_properties.sh
 
 ---
 
-<em>Run the playbook - download_kubespray.yml</em>   
+<em>Run the playbook - kubespray.yml</em>   
 Kubernetes clusters can be created using various automation tools. Kubespray is a composition of Ansible playbooks, inventory, provisioning tools, and domain knowledge for generic OS/Kubernetes clusters configuration management tasks. 
 
 Kubespray provides:
@@ -93,9 +93,13 @@ Kubespray provides:
 ``run the download_kubespray.yml playbook:``
 ```
 cd /etc/ansible/playbooks
-ansible-playbook -i hosts-skytap.yml --extra-vars="@extra-vars.yml" -b -v download_kubespray.yml
+ansible-playbook -i hosts-skytap.yml -b -v kubespray.yml
 ```
 Note: check that the hosts-skytap.yml & extra-vars.yml have been copied.
+
+---
+
+<em>Inventory</em>
 
 There is a sample inventory in the inventory folder. You need to copy that and name your whole cluster (e.g. mycluster). The repository has already provided you the inventory builder to update the Ansible inventory file.  
 
