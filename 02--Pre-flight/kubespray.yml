@@ -17,7 +17,7 @@
        - info
 
     # Update packages
-    - name: Update apt repo and cache on all Debian/Ubuntu boxes
+    - name: Update apt repo and cache on 'Installer' node
       apt:
        update_cache: yes
        force_apt_get: yes
@@ -25,7 +25,7 @@
       tags: 
        - install
 
-    # Check for previous Kubespray download
+    # Check for previous Kubespray
     - name: Check if kubespray is available
       stat:
         path: "{{ installer_home }}/{{ release }}"
@@ -44,7 +44,7 @@
     - name: Get Kubespray if required
       get_url:
         url: 'https://github.com/kubernetes-sigs/kubespray/archive/refs/tags/{{ version }}.zip'
-        dest: "{{ installer_home }}/{{release}}.zip"
+        dest: "{{ installer_home }}/{{ release }}.zip"
       when: kubespray.stat.exists == false
       tags: 
        - install
@@ -53,7 +53,7 @@
     # This is therefore, persisted on your local filesystem
     - name: Unarchive Kubespray-{{ version }}
       unarchive:
-        src: "{{ installer_home }}/{{release}}.zip"
+        src: "{{ installer_home }}/{{ release }}.zip"
         dest: "{{ installer_home }}"
       when: kubespray.stat.exists == false
       tags: 
@@ -62,10 +62,7 @@
     # Check Kubespray has unarchived
     - name: Re-Check if Kubespray has extracted
       stat:
-        path: "{{ installer_home }}/{{release}}"
-        state: directory
-        recurse: yes
-        owner: installer  
+        path: "{{ installer_home }}/{{ release }}"
       tags: 
        - install
 
