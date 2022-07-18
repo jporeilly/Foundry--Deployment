@@ -1,8 +1,8 @@
-## <font color='red'>Hitachi Vantara Foundry 2.2.1 Platform</font>  
+## <font color='red'>Hitachi Vantara Foundry 2.4.0 Platform</font>  
 
 Ansible playbooks install and configures Hitachi Vantara Foundry Platform.
 
-Prerequisites for the CentOS 7 machines:
+Prerequisites for the AlamLinux machines:
 * A public key generated on your Ansible Controller
 * SSH passwordless access on Nodes with root permissions
 * Completed 01 Infrastructure section
@@ -11,9 +11,9 @@ Prerequisites for the CentOS 7 machines:
 The following playbooks are run:  
 
 #### cluster.yml
-* Installs k8s 18.10
+* Installs k8s 1.21.6
 
-#### pre-flight_foundry.yml
+#### preflight-foundry.yml
 * Update packages
 * Ensure Map Max count > 262144
 * Install Helm - all Nodes
@@ -27,10 +27,10 @@ The following playbooks are run:
 * Install OpenEBS storage class
 
 
-#### install_foundry.yml
+#### deploy-foundry.yml
 * Creates a Log directory
 * Creates a Foundry directory
-* Unarchives Foundry Control Plane 2.2.1
+* Unarchives Foundry Control Plane 2.4.0
 * Creates a Metrics directory
 * Unarchives Metrics 1.0.0
 * Installs Cluster Services
@@ -43,9 +43,9 @@ The following playbooks are run:
 ---
 
 
-<em>Run the playbook - kubespray-release-2.14/cluster.yml</em>   
-Its is important that you explicitly include all the parameters when running the kubespray-release-2.14/cluster.yml playbook. 
-Kubespray release 2.14 installs and configures the Foundry Platform supported version: kubernetes 1.18.10
+<em>Run the playbook - kubespray-release-2.17.1/cluster.yml</em>   
+Its is important that you explicitly include all the parameters when running the kubespray-2.17.1/cluster.yml playbook. 
+Kubespray release 2.17.1 installs and configures the Foundry Platform supported version: kubernetes 1.21.6
 
 Pre-requistes:
 * Firewalls are not managed by kubespray. You'll need to implement appropriate rules as needed. You should disable your firewall in order to avoid any issues during deployment.  
@@ -53,8 +53,8 @@ Pre-requistes:
 
 ``run the cluster.yml playbook:``
 ```
-cd /installers/kubespray-release-2.14
-ansible-playbook -i hosts-skytap.yml --extra-vars "@extra-vars.yml"  -b -v cluster.yml
+cd /installers/kubespray-2.17.1
+ansible-playbook -i hosts-skytap.yml --extra-vars "@extra-vars.yml" -b -v cluster.yml
 ```
 Note: this is going to take about 5-7 mins..
 
@@ -62,7 +62,7 @@ Note: this is going to take about 5-7 mins..
 
 ``if you need to reset the k8s deployment:``
 ```
-cd /installers/kubespray-release-2.14
+cd /installers/kubespray-2.17.1
 ansible-playbook -i hosts-skytap.yml --extra-vars="@extra-vars.yml" reset.yml -b -v --become-user=root
 ```
 Note: This will still keep some residual config files, IP routing tables, etc
@@ -90,11 +90,11 @@ systemctl restart docker
 
 ---
 
-<em>Run the playbook - pre-flight_foundry.yml</em>      
-This will update, install and configure the various required packages for the Foudry Platform.
+<em>Run the playbook - preflight-foundry.yml</em>      
+This will update, install and configure the various required packages for the Foundry Platform.
  
 
-``run the playbook - pre-flight_foundry.yml:`` 
+``run the playbook - preflight-foundry.yml:`` 
 ```
 cd /etc/ansible/playbooks
 ansible-playbook -i hosts-skytap.yml --extra-vars="@extra-vars.yml" -b -v pre-flight_foundry.yml
@@ -120,7 +120,7 @@ sudo su - installer
 ``re-run the playbook - pre-flight_foundry.yml:`` 
 ```
 cd /etc/ansible/playbooks
-ansible-playbook -i hosts-skytap.yml --extra-vars="@extra-vars.yml" -b -v pre-flight_foundry.yml -t continue
+ansible-playbook -i hosts-skytap.yml --extra-vars="@extra-vars.yml" -b -v preflight-foundry.yml -t continue
 ```
 Note:  This will pick up the playbook from the continue tag onwards.
 
@@ -131,9 +131,9 @@ Note:  This will pick up the playbook from the continue tag onwards.
 ``run the playbook - install_foundry.yml:`` 
 ```
 cd /etc/ansible/playbooks
-ansible-playbook -i hosts-skytap.yml --extra-vars="@extra-vars.yml" -b -v install_foundry.yml
+ansible-playbook -i hosts-skytap.yml --extra-vars="@extra-vars.yml" -b -v deploy-foundry.yml
 ```
-Note: It will take about 10mins to unachive the Founadry Platform package.  
+Note: It will take about 10mins to unachive the Foundry Platform package.  
 
 you should have some logs appearing.  
 ``tail install-cluster-services.log: (new terminal)``
