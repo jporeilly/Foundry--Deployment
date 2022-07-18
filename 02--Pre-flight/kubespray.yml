@@ -6,7 +6,7 @@
   vars:
     installer_home: /installers
     release: kubespray-release-2.17.1
-    version: release-2.17.1
+    version: v2.17.1
     ansible_python_interpreter: /usr/bin/python3
   
   tasks:
@@ -43,7 +43,7 @@
     # This is therefore, persisted on your local filesystem
     - name: Get Kubespray if required
       get_url:
-        url: 'https://github.com/kubernetes-sigs/kubespray/archive/refs/heads/{{version}}.zip'
+        url: 'https://github.com/kubernetes-sigs/kubespray/archive/refs/tags/{{ version }}.zip'
         dest: "{{ installer_home }}/{{release}}.zip"
       when: kubespray.stat.exists == false
       tags: 
