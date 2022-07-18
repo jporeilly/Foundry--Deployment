@@ -59,18 +59,13 @@
       tags: 
        - install
     
-    # Update pip
-    - name: Update pip dependancies
-      pip:
-        requirements: requirements.txt
-        chdir: "{{ installer_home }}/{{release}}"
-      tags: 
-       - cluster]
-    
     # Check Kubespray has unarchived
     - name: Re-Check if Kubespray has extracted
       stat:
         path: "{{ installer_home }}/{{release}}"
+      state: directory
+      recurse: yes
+      owner: installer  
       tags: 
        - install
 
