@@ -1,5 +1,5 @@
 # Preflight - Foundry platform
-- name: Cluster Hosts Pre-Reqs
+- name: Preflight Foundry Cluster
   hosts:  "{{ groups['kube-node'] }}"
   become: true
   become_method: sudo
@@ -32,28 +32,10 @@
     # Require /usr/local/bin in the sudoers path so 'su' will find kubectl and Helm3.
     - name: Update sudoers secure_path to include /usr/local/bin
       shell: |
-        cp /etc/sudoers /etc/sudoers.{{ 10000 | random }}.bak
         sed -i "s!{{ sudoers_path.stdout }}!{{ sudoers_path.stdout }}:/usr/local/bin!g" /etc/sudoers     
       when: "'/usr/local/bin' not in sudoers_path.stdout"
 
-    # Reset DNS servers for Nodes
-    - name: Get /etc/dhcp/dhclient.conf
-      shell: cat /etc/dhcp/dhclient.conf | grep domain-name-servers | grep {{ dns_server }}
-      ignore_errors: true
-      register: dhcp_nameserver_entry
-      tags: 
-       - dhcp
-
-    # dhclient.conf will rebuild the /etc/resolv.conf file on reboot.
-    # Leverage the private DNS lookup of the hosting provider
-    # Not really required for this workshop as Master / Worker Nodes are on the same cluster Node.
-    - name: Override DNS entries
-      shell: |
-        cp /etc/dhcp/dhclient.conf /etc/dhcp/dhclient.conf.{{ 10000 | random }}.bak
-        echo "supersede domain-name-servers {{ dns_server }};" >> /etc/dhcp/dhclient.conf
-      register: dhcp_update
-
-    # Reboot Nodes and test
+    # Reboot Nodes and Test
     - name: Reboot hosts if required
       reboot:
         msg: "Reboot initiated by Ansible"
@@ -62,14 +44,10 @@
         pre_reboot_delay: 0
         post_reboot_delay: 30
         test_command: whoami
-      when: 
-        - dhcp_update is not skipped 
-
-    - name: Ping servers in hosts.yml after reboot
-      ping:
-      when: dhcp_update is defined  
 
 # Install Helm3 on all hosts 
+# Not strictly required as Helm is already installed in the 'install-pod', however used to issue
+# Helm commands from other servers in the environment.
 - name: Install helm on all hosts 
   hosts: all
   become: true
@@ -103,7 +81,7 @@
 
 # Switch to Master Node 1 as root
 # Configure kubeconfig on cluster for {{ ansible_user }}
-- name: Prepare Kubeconfig for {{ ansible_user }}
+- name: Prepare .kube/config for {{ ansible_user }}
   hosts:  "{{ groups['kube-master'][0] }}"
   become: true
   become_method: sudo
@@ -112,7 +90,7 @@
   tags: kubeconfig
   
   tasks:
-    - name: Create ~/.kube directory (root on master1)
+    - name: Create ~/.kube directory (as 'root' on master-node-01)
       file:
         path: ~/.kube
         state: directory
@@ -153,7 +131,7 @@
       tags: 
        - info
 
-    - name: Create ~/.kube directory (root on Ansible Controller)
+    - name: Create ~/.kube directory (as 'root' on Ansible Controller)
       file:
         path: ~/.kube
         state: directory
@@ -194,7 +172,7 @@
       debug:
         msg: "{{ pods.stdout_lines }}"
 
-# Install Docker locally
+# Install Docker Registry
 # Best practice not to run Docker as root, so user 'installer' is added to docker group
 - name: Install Docker
   hosts: "{{ groups['installer'][0] }}"
@@ -208,25 +186,30 @@
     docker_home: /installers/docker
     
   any_errors_fatal: true
+  
   tasks:
+    # B.P to install Docker with non-root user.
     - name: Create group for non-root docker
       shell: |
         addgroup docker;
         usermod {{ local_user }} -aG docker;
 
+    # Check to see if Docker is installed
     - name: Check for Docker
       shell: which docker
       ignore_errors: true
       register: docker_exists
       tags: 
        - info
-      
+
+    # Install Docker  
     - name: Install Docker
       apt: 
         name: docker.io
       when: docker_exists is failed
       tags: 
        - install 
+
 
     - name: Stop docker if running
       shell: systemctl stop docker
@@ -365,7 +348,7 @@
       when: '"{{ registry_domain }}" == "{{ groups[''installer''][0] }}"'
 
 # Switch to Nodes
-# Allow the nodes of the cluster to access the regsitry by certificate
+# Allow the nodes of the cluster to access the Registry with certificate
 - name: Create Registry Cert path on cluster
   hosts: "{{ groups['kube-node']}}"
   become: true
@@ -434,13 +417,15 @@
     - name: PreReq Yq
       shell: wget https://github.com/mikefarah/yq/releases/download/v4.2.0/yq_linux_amd64.tar.gz -O - | tar xz && mv yq_linux_amd64 /usr/bin/yq
       become: true
-
+    
+    # Check for Storage Class
     - name: Check storage class
       shell: kubectl get sc -A | grep "(default)"
       register: sc
       ignore_errors: true
 
-    # Install OpenEBS    
+    # Install OpenEBS
+    # demo / dev but not recommended in production    
     - name: Install openebs default storage (if needed)
       shell: "{{ item }}"
       with_items:
