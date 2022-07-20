@@ -54,7 +54,7 @@
 
    # Remove Docker and PodMan to prevent runc conflicts
    - name: Remove Docker and Podman
-     yum:
+     dnf:
        name:
        - docker
        - container-tools
