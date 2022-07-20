@@ -70,7 +70,7 @@
        - containers-common
        - atom-registries
        - runc
-     state: removed 
+       state: absent 
    
    # Remove legacy packages
    - name: Remove legacy packages
