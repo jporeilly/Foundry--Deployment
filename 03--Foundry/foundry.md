@@ -60,22 +60,6 @@ Note: this is going to take about 5-7 mins..
 
 ** RedHat: you will need to run this command to remove Docker and Podman before deploying Kubernetes. 
 
-``remove Docker/Podman:``
-```
-sudo dnf remove -y docker \
-                docker-client \
-                docker-client-latest \
-                docker-common \
-                docker-latest \
-                docker-latest-logrotate \
-                docker-logrotate \
-                docker-selinux \
-                docker-engine-selinux \
-                docker-engine \
-                podman \
-                runc
-```                
-
 <font color='green'>The following section is for Reference only.</font>
 
 ``if you need to reset the k8s deployment:``
