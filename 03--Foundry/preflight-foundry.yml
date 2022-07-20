@@ -8,12 +8,12 @@
   
   tasks:
     # Ping Nodes
-    - name: Ping
+    - name: Ping Nodes
       ping:
       tags: 
        - info
-
-   # Update Packages
+   
+    # Update Packages
     - name: Update all installed packages using YUM module
       yum:
        name: '*'
@@ -22,7 +22,12 @@
        update_only: yes
       register: yum_update_status
       tags: 
-       - updates
+      - updates
+      
+    # Check for reboot
+    - name: Reboot if packages are updated
+      reboot:
+      when: yum_update_status.changed 
     
     # Retrieve sudoers path
     - name: Get sudoers secure_path

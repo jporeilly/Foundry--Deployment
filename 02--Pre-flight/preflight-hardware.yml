@@ -32,7 +32,6 @@
      tags: 
       - updates
       
-
    # Check for reboot
    - name: Reboot if packages are updated
      reboot:
