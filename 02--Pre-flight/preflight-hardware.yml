@@ -53,26 +53,26 @@
       - elastic
 
    # Remove Docker and PodMan to prevent runc conflicts
-   - name: Uninstall Docker and Podman
+   - name: Remove Docker and Podman
      yum:
-      name:
-      - docker
-      - container-tools
-      - docker-client
-      - docker-client-latest
-      - docker-common
-      - docker-latest
-      - docker-latest-logrotate
-      - docker-logrotate
-      - docker-selinux
-      - docker-engine-selinux
-      - docker-engine
-      - buildah
-      - skopeo
-      - podman
-      - containers-common
-      - atom-registries
-      - runc
+       name:
+       - docker
+       - container-tools
+       - docker-client
+       - docker-client-latest
+       - docker-common
+       - docker-latest
+       - docker-latest-logrotate
+       - docker-logrotate
+       - docker-selinux
+       - docker-engine-selinux
+       - docker-engine
+       - buildah
+       - skopeo
+       - podman
+       - containers-common
+       - atom-registries
+       - runc
      state: absent 
 
     # easy option :)  Otherwise open Master / Worker ports for network - Calico 
