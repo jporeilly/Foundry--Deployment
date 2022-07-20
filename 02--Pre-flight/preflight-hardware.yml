@@ -31,11 +31,7 @@
      register: yum_update_status
      tags: 
       - updates
-
-   # Remove legacy packages
-   - name: Remove legacy packages
-     yum:
-      autoremove: yes
+      
 
    # Check for reboot
    - name: Reboot if packages are updated
@@ -54,6 +50,7 @@
 
    # Remove Docker and PodMan to prevent runc conflicts
    - name: Remove Docker and Podman
+     become: yes
      dnf:
        name:
        - docker
@@ -73,7 +70,13 @@
        - containers-common
        - atom-registries
        - runc
-     state: absent 
+     state: removed 
+   
+   # Remove legacy packages
+   - name: Remove legacy packages
+     yum:
+      autoremove: yes
+
 
     # easy option :)  Otherwise open Master / Worker ports for network - Calico 
    - name: Turn off firewall for kubernetes Install
