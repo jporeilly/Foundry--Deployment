@@ -54,9 +54,9 @@ Pre-requistes:
 ``run the cluster.yml playbook:``
 ```
 cd /installers/kubespray-2.17.1
-ansible-playbook -i hosts-skytap.yml --extra-vars "@extra-vars.yml" -b -v cluster.yml
+ansible-playbook -i hosts-skytap.yml --extra-vars "@extra-vars.yml" --become --become-user=root -v cluster.yml
 ```
-Note: this is going to take about 5-7 mins..
+Note: this is going to take about 6-8 mins..
 
 ** RedHat: you will need to run this command to remove Docker and Podman before deploying Kubernetes. 
 
