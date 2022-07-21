@@ -75,12 +75,10 @@
      yum:
       autoremove: yes
 
-
     # easy option :)  Otherwise open Master / Worker ports for network - Calico 
    - name: Turn off firewall for kubernetes Install
      command: systemctl disable firewalld
 
-   
    # Reboot the Nodes
    - name: Reboot the Nodes with all defaults
      shell: sleep 5 && reboot
