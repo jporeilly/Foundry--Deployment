@@ -160,7 +160,7 @@
         state: directory
       become: false
 
-    - name: Transfer config file from master cluster to 'root' .kube
+    - name: Transfer config file from master cluster to 'root' .kube on Ansible Controller
       raw: scp -i {{ ansible_ssh_private_key_file }} {{ ansible_user }}@{{ groups['kube-master'][0] }}:/home/{{ ansible_user }}/.kube/config ~/.kube/config
       become: false
 
