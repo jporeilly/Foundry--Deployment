@@ -176,8 +176,8 @@
     # Update IP address in ~/.kube/config to master-node-01.skytap.example
     - replace: 
         path: ~/.kube/config
-        regexp: '127.0.0.1'
-        replace: 'master-node-01.skytap.example'
+        regexp: 'https://127.0.0.1:6443'
+        replace: 'https://master-node-01.skytap.example:6443'
         backup: true
     
     # Test kubectl config
