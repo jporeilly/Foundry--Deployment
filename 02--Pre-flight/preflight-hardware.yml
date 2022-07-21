@@ -32,11 +32,6 @@
      tags: 
       - updates
       
-   # Check for reboot
-   - name: Reboot if packages are updated
-     reboot:
-     when: yum_update_status.changed   
-
    # Elasticsearch requires a max map count > 262144
    # Details: https://www.elastic.co/guide/en/elasticsearch/reference/current/vm-max-map-count.html
    - name: Expand max_map_count 
@@ -84,6 +79,6 @@
      shell: sleep 5 && reboot
      async: 1
      poll: 0
-     when: yum_update_status.changed==true
+     when: yum_update_status.changed
      tags:
       - reboot
