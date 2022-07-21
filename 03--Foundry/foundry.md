@@ -15,7 +15,6 @@ The following playbooks are run:
 
 #### preflight-foundry.yml
 * Update packages
-* Ensure Map Max count > 262144
 * Install Helm - all Nodes
 * Prepare kubeconfig
 * Install jq
@@ -99,7 +98,7 @@ This will update, install and configure the various required packages for the Fo
 ``run the playbook - preflight-foundry.yml:`` 
 ```
 cd /etc/ansible/playbooks
-ansible-playbook -i hosts-skytap.yml --extra-vars="@extra-vars.yml" -b -v pre-flight_foundry.yml
+ansible-playbook -i hosts-skytap.yml --extra-vars="@extra-vars.yml" -b -v preflight-foundry.yml
 ```
 Note: Run in OS Terminal. Do not run playbook in VSC Terminal. 
 
