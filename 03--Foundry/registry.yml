@@ -1,0 +1,236 @@
+# Install Docker Registry
+# Best practice not to run Docker as root, so user 'installer' is added to docker group
+- name: Install Docker
+  hosts: "{{ groups['installer'][0] }}"
+  become: true
+  become_method: sudo
+  become_user: root
+  gather_facts: true
+  tags: docker
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+    docker_home: /installers/docker
+    
+  any_errors_fatal: true
+  
+  tasks:
+    # B.P to install Docker with non-root user.
+    - name: Create group for non-root docker
+      shell: |
+        addgroup docker;
+        usermod {{ local_user }} -aG docker;
+
+    # Check to see if Docker is installed
+    - name: Check for Docker
+      shell: which docker
+      ignore_errors: true
+      register: docker_exists
+      tags: 
+       - info
+
+    # Install Docker  
+    - name: Install Docker
+      apt: 
+        name: docker.io
+      when: docker_exists is failed
+      tags: 
+       - install 
+
+
+    - name: Stop docker if running
+      shell: systemctl stop docker
+      ignore_errors: true
+      when: docker_exists is defined 
+
+    - name: Create /etc/docker directory
+      ignore_errors: true
+      file:
+        path: "{{ item }}"
+        state: directory
+      with_items:
+        - /etc/docker
+      when: docker_exists is failed
+
+    - name: Create Docker daemon.json and data root
+      shell: |
+         echo '{ "data-root" : "{{ docker_home }}" }' > /etc/docker/daemon.json
+         mv /var/lib/docker /installers
+      when: docker_exists is failed 
+      tags: 
+       - install
+       - docker
+
+    - name: Non-root Docker directories
+      shell: |
+        chgrp docker "{{ item }}"
+        chmod 775 "{{ item }}"
+      with_items:
+        - /etc/docker
+        - /etc/docker/daemon.json
+        - /installers/docker
+      when: docker_exists is failed 
+
+    - name: Start docker
+      shell: systemctl start docker
+
+    - name: Check Root change
+      shell: docker info | grep Root
+      register: docker_root
+      failed_when: '"{{ docker_home }}" not in docker_root.stdout'
+
+  # Only when the Registry is installed on the installer node.
+  # Otherwise, its assumed the registry is external and already defined.
+- name: Configure Registry
+  hosts: "{{ groups['installer'][0] }}"
+  become: false
+  gather_facts: true
+  any_errors_fatal: true
+  vars:
+    ansible_ssh_private_key_file: "~/.ssh/id_rsa"
+    ansible_ssh_private_key_file_name: "id_rsa"
+    ansible_user: k8s
+    ansible_python_interpreter: /usr/bin/python3
+  tags: 
+   - registry
+   - continue
+
+
+  tasks:
+    - block:
+      - name: Debug ID getting new group role
+        shell: |
+          # Looks like each step is independant, which means installer user does not ever get docker group while still logged in
+          # of you allow reboot and come back then you can run these because the group is there.
+          newgrp docker
+          id
+        register: output
+
+      - debug:
+          msg: 
+            - "{{ output.stdout_lines|list }}"
+            - "To get docker group rights, you will need to logout and back in to continue."
+            - "the gnome UI will retain your rights so you need to run: loginctl -terminate-user {{ local_user }}"
+            - "or execute the command: sudo su - installer"
+            - "then re-run adding the optional tag '-t continue'.  This will pick up the installation at 'Configure Regsitry'."  
+        failed_when: '"(docker)" not in output.stdout_lines|string'
+      when: '"{{ registry_domain }}" == "{{ groups[''installer''][0] }}"'
+
+- name: Configure Registry
+  hosts: "{{ groups['installer'][0] }}"
+  become: false
+  gather_facts: true
+  tags: 
+   - never
+   - continue
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+
+  # This configures a self-signed private Docker Registry, i.e.  the cerificate to authorize users to access the Registry is self-signed. 
+  # Every Docker daemon needs to trust that certificate, so copied over to the Cluster Nodes.
+  tasks:
+    - block:
+      - name: Create local certificate
+        shell: |
+          cd ~{{ local_user }};
+          mkdir -p certs;
+          # openssl 1.1.1
+          openssl req -newkey rsa:4096 -nodes -sha256 -keyout certs/domain.key -x509 -days 365 -out certs/domain.crt -subj "/CN=dockerhost" -addext "subjectAltName=DNS:{{ groups['installer'][0] }}"
+          # openssl req -newkey rsa:4096 -nodes -sha256 -keyout certs/domain.key -x509 -days 365 -out certs/domain.crt -subj "/CN={{ groups['installer'][0] }}"
+        tags: 
+         - certs
+
+      - name: Allow self-signed Registry
+        shell: |
+          sed -i "s! }!, \"insecure-registries\" : [\"{{ groups['installer'][0] }}:5000\"]}!1" /etc/docker/daemon.json
+
+      - name: pip docker
+        pip: 
+          name: docker
+
+      - name: Build registry service
+        docker_container:
+          name: registry
+          image: registry:2
+          state: started
+          detach: yes
+          restart: yes
+          restart_policy: unless-stopped
+          #entrypoint: sleep 3000
+          ports:
+          - "5000:5000"
+          volumes:
+          - "/home/{{ local_user }}/certs:/certs"
+          env:
+              REGISTRY_HTTP_ADDR: "0.0.0.0:5000"
+              REGISTRY_HTTP_TLS_CERTIFICATE: "/certs/domain.crt"
+              REGISTRY_HTTP_TLS_KEY: "/certs/domain.key"       
+
+      # Perform manually as this restarts the running docker process on the installer node
+      - name: Restart docker for registry
+        shell: systemctl restart docker
+        become: true
+
+      - name: Check registry change
+        shell: |
+          docker info | grep -i -a1 Insecure 
+        register: docker_insecure
+        failed_when: '"{{ groups[''installer''][0] }}" not in docker_insecure.stdout'
+      when: '"{{ registry_domain }}" == "{{ groups[''installer''][0] }}"'
+
+# Switch to Nodes
+# Allow the nodes of the cluster to access the Registry with certificate
+- name: Create Registry Cert path on cluster
+  hosts: "{{ groups['kube-node']}}"
+  become: true
+  become_method: sudo
+  become_user: root
+  gather_facts: true
+  any_errors_fatal: true
+  tags: 
+   - never
+   - continue
+  # Only when the Registry is installed on the installer node.
+  # Otherwise, its assumed the registry is external and already defined.
+
+  tasks:
+    - block:
+      - name: Create Docker cert directory on cluster
+        shell: "mkdir -p /etc/docker/certs.d/{{ groups['installer'][0] }}:5000"
+
+      - name: Set ownership of cluster Docker cert directory to 'installer'
+        shell: "chown -R {{ ansible_user }}:{{ ansible_user }} /etc/docker/certs.d/{{ groups['installer'][0] }}:5000"
+      when: '"{{ registry_domain }}" == "{{ groups[''installer''][0] }}"'
+
+- name: Copy Docker cert from installer node to cluster
+  become: false
+  gather_facts: false
+  hosts:  "{{ groups['kube-node'] }}" 
+  any_errors_fatal: true
+  tags: 
+   - never
+   - continue
+  # Only when the Registry is installed on the installer node.
+  # Otherwise, its assumed the registry is external and already defined.
+
+  tasks:
+    - block:
+      #    
+      - name: Write the clusters host key to known hosts
+        connection: local
+        shell: "ssh-keyscan -H {{ inventory_hostname }} >> ~/.ssh/known_hosts"
+
+      - name: Transfer file from installer to cluster
+        shell: scp -i {{ ansible_ssh_private_key_file }} /home/{{ local_user }}/certs/domain.crt {{ansible_user }}@{{ inventory_hostname }}:/etc/docker/certs.d/{{ groups['installer'][0] }}:5000
+        delegate_to: "{{ groups['installer'][0] }}"
+      
+      - name: Verify new cert directory on cluster
+        shell: | 
+          cd /etc/docker/certs.d/{{ groups['installer'][0] }}:5000;
+          pwd;
+          ls -l;
+        register: cert_path
+
+      - name: Show filepath for new docker cert
+        debug:
+          msg: "{{ cert_path.stdout_lines }}"
+      when: '"{{ registry_domain }}" == "{{ groups[''installer''][0] }}"'

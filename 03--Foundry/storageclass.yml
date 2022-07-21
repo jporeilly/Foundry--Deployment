@@ -1,0 +1,41 @@
+- name: Install Storage Class - if required
+  hosts: "{{ groups['installer'][0] }}"
+  become: false
+  gather_facts: true
+  tags: 
+   - storage
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+    
+  tasks:
+    - name: PreReq Yq
+      shell: wget https://github.com/mikefarah/yq/releases/download/v4.2.0/yq_linux_amd64.tar.gz -O - | tar xz && mv yq_linux_amd64 /usr/bin/yq
+      become: true
+    
+    # Check for Storage Class
+    - name: Check storage class
+      shell: kubectl get sc -A | grep "(default)"
+      register: sc
+      ignore_errors: true
+
+    # Install OpenEBS
+    # demo / dev but not recommended in production    
+    - name: Install openebs default storage (if required)
+      shell: "{{ item }}"
+      with_items:
+        - kubectl create ns openebs
+        - helm repo add openebs https://openebs.github.io/charts
+        - helm repo update
+        - helm install --namespace openebs openebs openebs/openebs
+      when: "'default' not in sc.stdout"
+
+    - name: Set openEBs as default storageclass
+      shell: |
+        kubectl patch storageclass openebs-hostpath -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
+      when: "'default' not in sc.stdout"
+
+    - name: Check Openebs storage class
+      shell: kubectl get sc | grep default
+      register: openebs
+      failed_when: "'openebs-hostpath' not in openebs.stdout"
+      when: "'default' not in sc.stdout"
