@@ -174,10 +174,10 @@
        mode: '0644'
 
     # Update IP address in ~/.kube/config to master-node-01.skytap.example
-    - replace: 
+    - lineinfile: 
         path: ~/.kube/config
         regexp: '^(.*)server:(.*)$'
-        replace: 'server: https://master-node-01.skytap.example:6443'
+        line: 'server: https://master-node-01.skytap.example:6443'
         backup: true
     
     # Test kubectl config
