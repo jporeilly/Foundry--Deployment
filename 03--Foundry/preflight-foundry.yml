@@ -30,11 +30,6 @@
       register: yum_update_status
       tags: 
       - updates
-      
-    # Check for reboot
-    - name: Reboot if packages are updated
-      reboot:
-      when: yum_update_status.changed 
     
     # Retrieve sudoers path
     - name: Get sudoers secure_path
@@ -56,6 +51,7 @@
         pre_reboot_delay: 0
         post_reboot_delay: 30
         test_command: whoami
+      when: yum_update_status.changed
 
 # Install Helm3 on all hosts 
 # Not strictly required as Helm is already installed in the 'install-pod', however used to issue
@@ -66,9 +62,12 @@
   become_method: sudo
   become_user: root
   gather_facts: false
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
 
   tasks:
-    # Check for Helm
+    # Check for Helm. 
+    # The SSH connection to the haproxy server will fail as no keys have been copied over.
     - name: Check Helm version
       shell: helm version
       register: helm_version
@@ -99,6 +98,8 @@
   become_method: sudo
   gather_facts: false
   any_errors_fatal: true
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
   tags: kubeconfig
   
   tasks:
@@ -125,6 +126,8 @@
   become_method: sudo
   gather_facts: true
   any_errors_fatal: true
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
   tags: kubeconfig
   
   tasks:
@@ -264,18 +267,19 @@
       register: docker_root
       failed_when: '"{{ docker_home }}" not in docker_root.stdout'
 
+  # Only when the Registry is installed on the installer node.
+  # Otherwise, its assumed the registry is external and already defined.
 - name: Configure Registry
   hosts: "{{ groups['installer'][0] }}"
   become: false
   gather_facts: true
   any_errors_fatal: true
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
   tags: 
    - registry
    - continue
-  vars:
-    ansible_python_interpreter: /usr/bin/python3
-  # Only when the Registry is installed on the installer node.
-  # Otherwise, its assumed the registry is external and already defined.
+
 
   tasks:
     - block:
