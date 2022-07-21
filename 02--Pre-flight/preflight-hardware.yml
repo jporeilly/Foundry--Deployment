@@ -1,5 +1,5 @@
 ---
-# Preflight - Infrastructure 
+# Preflight - Hardware 
 - name: Configure Cluster Nodes
   hosts: "{{ groups['kube-node'] }}"
   become: true
