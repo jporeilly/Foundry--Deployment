@@ -177,7 +177,7 @@
     - replace: 
         path: ~/.kube/config
         regexp: '^(.*)server:(.*)$'
-        replace: 'server: {{ groups['etcd'][0] }}:6443'
+        replace: 'server: https://master-node-01.skytap.example:6443'
         backup: true
     
     # Test kubectl config
