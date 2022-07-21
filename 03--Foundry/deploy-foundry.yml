@@ -1,4 +1,5 @@
-## Install Foundry Control Plane
+---
+# Install Foundry Control Plane
 - name: Install Foundry Services
   hosts: "{{ groups['installer'][0] }}"
   become: false

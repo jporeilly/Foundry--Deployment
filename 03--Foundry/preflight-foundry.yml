@@ -1,3 +1,4 @@
+---
 # Preflight - Foundry platform
 - name: Preflight Foundry Cluster
   hosts:  "{{ groups['kube-node'] }}"
