@@ -167,8 +167,8 @@
     # Copy over root/.kube/config to home/installer/.kube
     - name: Copy config from root to home
       copy:
-       src: ~/.kube
-       dest: /home/installer/.kube
+       src: ~/.kube/config
+       dest: /home/installer/.kube/config
        owner: installer
        group: installer
        mode: '0644'
@@ -176,8 +176,8 @@
     # Update IP address in ~/.kube/config to master-node-01.skytap.example
     - replace: 
         path: ~/.kube/config
-        regexp: 'https://127.0.0.1:6443'
-        replace: 'https://master-node-01.skytap.example:6443'
+        regexp: '^(.*)server:(.*)$'
+        replace: 'server: {{ groups['etcd'][0] }}:6443'
         backup: true
     
     # Test kubectl config
