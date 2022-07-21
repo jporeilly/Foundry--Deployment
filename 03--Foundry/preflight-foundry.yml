@@ -166,7 +166,12 @@
 
     # Copy over root/.kube/config to home/installer/.kube
     - name: Copy config from root to home
-      shell: "cp /root/.kube/config ~/.kube"
+      copy:
+       src: ~/.kube
+       dest: /home/installer/.kube
+       owner: installer
+       group: installer
+       mode: '0644'
 
     # Update IP address in ~/.kube/config to master-node-01.skytap.example
     - replace: 
