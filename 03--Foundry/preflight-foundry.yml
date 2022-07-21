@@ -6,7 +6,13 @@
   become_method: sudo
   become_user: root
   gather_facts: true
-  
+  vars:
+    ansible_ssh_private_key_file: "~/.ssh/id_rsa"
+    ansible_ssh_private_key_file_name: "id_rsa"
+    ansible_user: k8s
+
+    ansible_python_interpreter: /usr/bin/python3
+
   tasks:
     # Ping Nodes
     - name: Ping Nodes
