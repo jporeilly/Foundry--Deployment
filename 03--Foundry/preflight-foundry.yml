@@ -56,6 +56,7 @@
 # Install Helm3 on all hosts 
 # Not strictly required as Helm is already installed in the 'install-pod', however used to issue
 # Helm commands from other servers in the environment.
+# Should be a preflight task.
 - name: Install helm on all hosts 
   hosts: all
   become: true
@@ -147,13 +148,6 @@
     - name: Install kubectl
       raw: snap install kubectl --channel=1.21/stable --classic
 
-    - name: Get local user home
-      local_action: command echo $HOME
-      register: local_home
-      become: false
-      tags: 
-       - info
-
     - name: Create ~/.kube directory (as 'root' on Ansible Controller)
       file:
         path: ~/.kube
@@ -164,17 +158,17 @@
       raw: scp -i {{ ansible_ssh_private_key_file }} {{ ansible_user }}@{{ groups['kube-master'][0] }}:/home/{{ ansible_user }}/.kube/config ~/.kube/config
       become: false
 
-    # Now get config from {{ local_home.stdout }}
-    - name: Create ~./kube directory
+    # Create ~/.kube directory
+    - name: Create ~/.kube directory
       file:
         path: ~/.kube
         state: directory
 
-    # Copy over Kube/config to home/installer
+    # Copy over root/.kube/config to home/installer/.kube
     - name: Copy config from root to home
-      shell: "cp {{ local_home.stdout }}/.kube/config ~/.kube"
+      shell: "cp /root/.kube/config ~/.kube"
 
-    # Update IP address in ~/.kube/config to master-node-01
+    # Update IP address in ~/.kube/config to master-node-01.skytap.example
     - replace: 
         path: ~/.kube/config
         regexp: '127.0.0.1'
