@@ -161,8 +161,8 @@
     # Update IP address in ~/.kube/config to master-node-01.skytap.example
     - lineinfile: 
         path: /home/installer/.kube/config
-        regexp: '^(.*)server:(.*)$'
-        line: 'server: https://master-node-01.skytap.example:6443'
+        regexp: '^(.*)https:(.*)$'
+        line: 'https://master-node-01.skytap.example:6443'
         backup: true    
 
     # Create ~/.kube directory
