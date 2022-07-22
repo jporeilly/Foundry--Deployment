@@ -5,7 +5,7 @@ all:
       ansible_host: 10.0.0.1
       ip: 10.0.0.1
       access_ip: 10.0.0.1
-      ansible_user: haproxy
+      ansible_user: ha-proxy
     installer.skytap.example:
       ansible_host: localhost
       ip: 10.0.0.2
