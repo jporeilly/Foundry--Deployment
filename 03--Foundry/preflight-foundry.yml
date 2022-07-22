@@ -53,43 +53,6 @@
         test_command: whoami
       when: yum_update_status.changed
 
-# Install Helm3 on all hosts 
-# Not strictly required as Helm is already installed in the 'install-pod', however used to issue
-# Helm commands from other servers in the environment.
-# Should be a preflight task.
-- name: Install helm on all hosts 
-  hosts: all
-  become: true
-  become_method: sudo
-  become_user: root
-  gather_facts: false
-  vars:
-    ansible_python_interpreter: /usr/bin/python3
-
-  tasks:
-    # Check for Helm. 
-    - name: Check Helm version
-      shell: helm version
-      register: helm_version
-      ignore_errors: true
-      tags: 
-       - helm
-
-    - name: Get Helm
-      get_url:
-         url: https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
-         dest: ./get_helm.sh
-         mode: 700
-      when: helm_version.rc != 0
-      tags: 
-       - helm
-       
-    - name: Install Helm
-      shell: ./get_helm.sh
-      when: "'not found' in helm_version.stderr"
-      tags: 
-       - helm
-
 # Switch to Master Node 1 as root
 # Configure kubeconfig on cluster for {{ ansible_user }}
 - name: Prepare .kube/config for {{ ansible_user }}
