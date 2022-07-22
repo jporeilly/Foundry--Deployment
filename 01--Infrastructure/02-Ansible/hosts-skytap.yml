@@ -1,16 +1,6 @@
 # hosts-skytap.yml
 all:
   hosts:
-    master-node-01.skytap.example:
-      ansible_host: 10.0.0.101
-      ip: 10.0.0.101
-      access_ip: 10.0.0.101
-      ansible_user: k8s
-    master-node-02.skytap.example:
-      ansible_host: 10.0.0.102
-      ip: 10.0.0.102
-      access_ip: 10.0.0.102
-      ansible_user: k8s
     haproxy.skytap.example:
       ansible_host: 10.0.0.1
       ip: 10.0.0.1
@@ -22,6 +12,16 @@ all:
       access_ip: 10.0.0.2
       ansible_user: installer
       ansible_connection: local
+    master-node-01.skytap.example:
+      ansible_host: 10.0.0.101
+      ip: 10.0.0.101
+      access_ip: 10.0.0.101
+      ansible_user: k8s
+    master-node-02.skytap.example:
+      ansible_host: 10.0.0.102
+      ip: 10.0.0.102
+      access_ip: 10.0.0.102
+      ansible_user: k8s
   children:
     kube-master:
       hosts:
