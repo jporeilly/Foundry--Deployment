@@ -320,6 +320,7 @@ Note: keys are located in .ssh directory. 2 keys: id_rsa (private) id_rsa.pub (p
 
 ``copy over key to k8s user on cluster nodes:``
 ```
+ssh-copy-id k8s@10.0.0.1
 ssh-copy-id k8s@10.0.0.101
 ssh-copy-id k8s@10.0.0.102
 ```
