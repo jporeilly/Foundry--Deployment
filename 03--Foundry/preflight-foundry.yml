@@ -180,8 +180,6 @@
        group: installer
        mode: '0644'
 
-
-    
     # Test kubectl config
     - name: Check kubectl connectivity from installer node to cluster
       shell: "kubectl get nodes"

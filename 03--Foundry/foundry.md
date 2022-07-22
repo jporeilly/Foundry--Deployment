@@ -47,6 +47,7 @@ This will update, install and configure the various required packages for the Fo
 
 ``run the playbook - preflight-foundry.yml:`` 
 ```
+cd
 cd /etc/ansible/playbooks
 ansible-playbook -i hosts-skytap.yml --extra-vars="@extra-vars.yml" -b -v preflight-foundry.yml
 ```

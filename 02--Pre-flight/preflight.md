@@ -33,7 +33,7 @@ The following playbooks are run:
 <em>Run the playbook - preflight-hardware.yml</em>  
 This will update, install and configure the various required packages.
 
-``run the playbook - preflight_hardware.yml:``
+``run the playbook - preflight-hardware.yml:``
 ```
 cd /etc/ansible/playbooks
 ansible-playbook preflight-hardware.yml
@@ -108,6 +108,7 @@ Pre-requistes:
 
 ``run the cluster.yml playbook:``
 ```
+cd
 cd /installers/kubespray-2.17.1
 ansible-playbook -i hosts-skytap.yml --extra-vars="@extra-vars.yml" --become --become-user=root -v cluster.yml
 ```
