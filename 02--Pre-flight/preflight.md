@@ -12,7 +12,6 @@ The following playbooks are run:
 #### pre-flight_hardware.yml
 * Update packages
 * Install common packages
-* Disable SELinux
 * Turn off firewall
 * Set max_map_count=262144
 * Reboot Nodes
