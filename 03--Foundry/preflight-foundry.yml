@@ -159,9 +159,9 @@
       become: false
 
     # Update IP address in ~/.kube/config to master-node-01.skytap.example
-    - lineinfile: 
+    - replace: 
         path: /home/installer/.kube/config
-        regexp: '^(.*)https:(.*)$'
+        regexp: 'https:(.*)$'
         line: 'https://master-node-01.skytap.example:6443'
         backup: true    
 
