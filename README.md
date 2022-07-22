@@ -5,20 +5,22 @@ DataOps unlocks business value by operationalizing data management with automati
 
 #### <font color='red'>Module 01 - Infrastructure</font>
 * Configure SkyTap Lab environment
-* Configure AlmaLinux (RHEL) 8.4 Master Nodes
+* Configure AlmaLinux (RHEL) 8.5 Master Nodes
 * Configure SSH connections
 
 #### <font color='red'>Module 02 - Pre-flight</font>
-* Download Kubespray 2.17.1
 * Configure env.properties
 * Configure extra-vars.yml
 * Configure hosts-skytap.yml
-* Run preflight_hardware.yml playbook
+* Run preflight-hardware.yml playbook
+* Run kubespray.yml playbook
+* Run cluster.yml playbook
 
 #### <font color='red'>Module 03 - Foundry Platform</font>
-* Run cluster.yml playbook
-* Run pre-flight_foundry.yml playbook
-* Run install_foundry.yml playbook
+* Run preflight-foundry.yml playbook
+* Run docker-registry.yml playbook
+* Run docker-registry.yml playbook
+* Run deploy-foundry.yml playbook
 
 #### <font color='red'>Module 04 - Post Installation</font>
 * Kiali
@@ -35,5 +37,5 @@ DataOps unlocks business value by operationalizing data management with automati
 
 | Artifact                   | Date     |  
 | ---------------------------| ---------| 
-| Course released            | 04/07/22 | 
+| Course released            | 31/08/22 | 
 |
