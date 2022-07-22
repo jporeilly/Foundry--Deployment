@@ -51,9 +51,19 @@ cd
 cd /etc/ansible/playbooks
 ansible-playbook -i hosts-skytap.yml --extra-vars="@extra-vars.yml" -b -v preflight-foundry.yml
 ```
-Note: Run in OS Terminal. Do not run playbook in VSC Terminal. 
 
 ---
+
+<em>Run the playbook - docker-registry.yml</em>      
+This will update, install and configure the various required packages for the Foundry Platform.
+ 
+
+``run the playbook - preflight-foundry.yml:`` 
+```
+cd
+cd /etc/ansible/playbooks
+ansible-playbook -i hosts-skytap.yml --extra-vars="@extra-vars.yml" -b -v preflight-foundry.yml
+```
 
 <em>Configure Registry</em>  
 Notice that the last few playbooks haven't run.  To complete the playbook tasks:
