@@ -9,7 +9,7 @@ Prerequisites for the AlmaLinux 8.4 machines:
 
 The following playbooks are run:  
 
-#### pre-flight_hardware.yml
+#### preflight-hardware.yml
 * Update packages
 * Install common packages
 * Turn off firewall
@@ -21,9 +21,12 @@ The following playbooks are run:
 * Run the apply_env_properties.sh
 * Check the extra-vars.yml values
 
-#### download_kubespray.yml
+#### kubespray.yml
 * Create the release directory
 * Unpacks kubespray-2.17.1
+
+#### cluster.yml
+* Installs k8s 1.21.6
 
 ---
 

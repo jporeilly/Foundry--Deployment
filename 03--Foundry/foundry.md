@@ -10,9 +10,6 @@ Prerequisites for the AlamLinux machines:
 
 The following playbooks are run:  
 
-#### cluster.yml
-* Installs k8s 1.21.6
-
 #### preflight-foundry.yml
 * Update packages
 * Install Helm - all Nodes
