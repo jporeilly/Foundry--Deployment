@@ -58,7 +58,7 @@
 # Helm commands from other servers in the environment.
 # Should be a preflight task.
 - name: Install helm on all hosts 
-  hosts: all
+  hosts: "{{ groups['helm'] }}"
   become: true
   become_method: sudo
   become_user: root
@@ -68,7 +68,6 @@
 
   tasks:
     # Check for Helm. 
-    # The SSH connection to the haproxy server will fail as no keys have been copied over.
     - name: Check Helm version
       shell: helm version
       register: helm_version
