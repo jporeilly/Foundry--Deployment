@@ -19,7 +19,7 @@ DataOps unlocks business value by operationalizing data management with automati
 #### <font color='red'>Module 03 - Foundry Platform</font>
 * Run preflight-foundry.yml playbook
 * Run docker-registry.yml playbook
-* Run docker-registry.yml playbook
+* Run storage-class.yml playbook
 * Run deploy-foundry.yml playbook
 
 #### <font color='red'>Module 04 - Post Installation</font>
