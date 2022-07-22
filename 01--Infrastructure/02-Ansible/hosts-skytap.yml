@@ -34,20 +34,15 @@ all:
     etcd:
       hosts:
         master-node-01.skytap.example:
-    helm:
-      hosts:
-        installer.skytap.example:        
-        master-node-01.skytap.example:
-        master-node-02.skytap.example:
     k8s-cluster:
       children:
         kube-master:
         kube-node:
-    calico-rr:
-      hosts: {}
     installer:
       hosts:
         installer.skytap.example:
     haproxy:                    
       hosts: 
         haproxy.skytap.example:
+    calico-rr:
+      hosts: {}    

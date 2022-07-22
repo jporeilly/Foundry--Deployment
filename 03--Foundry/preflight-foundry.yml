@@ -58,7 +58,7 @@
 # Helm commands from other servers in the environment.
 # Should be a preflight task.
 - name: Install helm on all hosts 
-  hosts: "{{ groups['helm'] }}"
+  hosts: all
   become: true
   become_method: sudo
   become_user: root
