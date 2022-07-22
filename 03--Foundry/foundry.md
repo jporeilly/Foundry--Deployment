@@ -20,11 +20,14 @@ The following playbooks are run:
 * Install jq
 * Install kubectl
 * Configure kubectl for 'installer' access
+
+#### docker-registry.yml
 * Install Docker
 * Configure a Docker insecure Registry - Ansible Controller
 * Copy over certs to 'installer'
-* Install OpenEBS storage class
 
+#### storage-class.yml
+* Install OpenEBS storage class
 
 #### deploy-foundry.yml
 * Creates a Log directory
@@ -38,56 +41,6 @@ The following playbooks are run:
 * Upload Foundry charts & images
 * Install Metrics Addon
 * Upload Metrics image
-
----
-
-
-<em>Run the playbook - kubespray-release-2.17.1/cluster.yml</em>   
-Its is important that you explicitly include all the parameters when running the kubespray-2.17.1/cluster.yml playbook. 
-Kubespray release 2.17.1 installs and configures the Foundry Platform supported version: kubernetes 1.21.6
-
-Pre-requistes:
-* Firewalls are not managed by kubespray. You'll need to implement appropriate rules as needed. You should disable your firewall in order to avoid any issues during deployment.  
-* If kubespray is ran from a non-root user account, correct privilege escalation method should be configured in the target servers and the ansible_become flag or command parameters --become or -b should be specified. 
-
-``run the cluster.yml playbook:``
-```
-cd /installers/kubespray-2.17.1
-ansible-playbook -i hosts-skytap.yml --extra-vars="@extra-vars.yml" --become --become-user=root -v cluster.yml
-```
-Note: this is going to take about 6-8 mins..
-
-** RedHat: you will need to run this command to remove Docker and Podman before deploying Kubernetes. 
-
-<font color='green'>The following section is for Reference only.</font>
-
-``if you need to reset the k8s deployment:``
-```
-cd /installers/kubespray-2.17.1
-ansible-playbook -i hosts-skytap.yml --extra-vars="@extra-vars.yml" reset.yml -b -v --become-user=root
-```
-Note: This will still keep some residual config files, IP routing tables, etc
-
-``rest kubernetes cluster using kubeadm:``
-```
-kubeadm reset -f
-```
-``remove all the data from all below locations:``
-```
-sudo rm -rf /etc/cni /etc/kubernetes /var/lib/dockershim /var/lib/etcd /var/lib/kubelet /var/run/kubernetes ~/.kube/*
-```
-``flush all the firewall (iptables) rules (as root):``
-```
-sudo -i
-iptables -F && iptables -X
-iptables -t nat -F && iptables -t nat -X
-iptables -t raw -F && iptables -t raw -X
-iptables -t mangle -F && iptables -t mangle -X
-```
-``restart the Docker service:``
-```
-systemctl restart docker
-```
 
 ---
 
