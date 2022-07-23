@@ -1,6 +1,5 @@
 ---
 # Install Docker Registry
-# B.P not to run Docker as root, so user 'installer' is added to docker group
 - name: install Docker
   hosts: "{{ groups['installer'][0] }}"
   become: true
