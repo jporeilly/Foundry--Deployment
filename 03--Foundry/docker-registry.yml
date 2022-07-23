@@ -57,12 +57,7 @@
         state: latest
         update_cache: true
 
-    - name: Create group for non-root docker
-      shell: |
-        addgroup docker;
-        usermod {{ local_user }} -aG docker;  
-
-    - name: check docker is active
+    - name: Check docker is active
       service:
         name: docker
         state: started
@@ -73,80 +68,35 @@
         name: docker
         state: present
 
-    - name: adding ubuntu to docker group
+    - name: Add "{{ ansible_user }}" to docker group
       user:
-        name: ubuntu
+        name: "{{ ansible_user }}"
         groups: docker
         append: yes
+
     - name: Install docker-compose
       get_url:
         url: https://github.com/docker/compose/releases/download/1.29.2/docker-compose-Linux-x86_64
         dest: /usr/local/bin/docker-compose
         mode: 'u+x,g+x'
+
     - name: Change file ownership, group and permissions
-      ansible.builtin.file:
+      file:
         path: /usr/local/bin/docker-compose
-        owner: ubuntu
-        group: ubuntu 
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
 
 
     ---
-- hosts: all
-  remote_user: ubuntu
-  become: true
-  tasks:
-    - name: install dependencies
-      apt:
-        name: "{{item}}"
-        state: present
-        update_cache: yes
-      loop:
-        - apt-transport-https
-        - ca-certificates
-        - curl
-        - gnupg-agent
-        - software-properties-common
-    - name: add GPG key
-      apt_key:
-        url: https://download.docker.com/linux/ubuntu/gpg
-        state: present
-    - name: add docker repository to apt
-      apt_repository:
-        repo: deb https://download.docker.com/linux/ubuntu bionic stable
-        state: present
-    - name: install docker
-      apt:
-        name: "{{item}}"
-        state: latest
-        update_cache: yes
-      loop:
-        - docker-ce
-        - docker-ce-cli
-        - containerd.io
-    - name: check docker is active
+
       service:
         name: docker
         state: started
         enabled: yes
-    - name: Ensure group "docker" exists
-      ansible.builtin.group:
-        name: docker
-        state: present
-    - name: adding ubuntu to docker group
-      user:
-        name: ubuntu
-        groups: docker
-        append: yes
-    - name: Install docker-compose
-      get_url:
-        url: https://github.com/docker/compose/releases/download/1.29.2/docker-compose-Linux-x86_64
-        dest: /usr/local/bin/docker-compose
-        mode: 'u+x,g+x'
-    - name: Change file ownership, group and permissions
-      ansible.builtin.file:
-        path: /usr/local/bin/docker-compose
-        owner: ubuntu
-        group: ubuntu         
+
+
+    
+        
 
 
 
@@ -176,34 +126,7 @@
 
 
 
-  tasks:
-    # B.P to install Docker as non-root user.
-    - name: Create group for non-root docker
-      shell: |
-        addgroup docker;
-        usermod {{ local_user }} -aG docker;
 
-    # Check to see if Docker is installed
-    - name: Check If Docker Is Installed
-      command: docker --version
-      register: docker_valid
-      ignore_errors: yes
-      tags: 
-       - info
-
-    # Install Docker  
-    - name: Install Docker
-      apt: 
-        name: docker.io
-      when: docker_valid.failed
-      tags: 
-       - install 
-
-    # Stop Docker if running
-    - name: Stop docker if running
-      command: systemctl stop docker
-      ignore_errors: true
-      when: docker_valid.defined 
 
     # 
     - name: Create /etc/docker directory
