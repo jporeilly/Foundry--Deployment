@@ -17,14 +17,15 @@
       ignore_errors: true
 
     # Install OpenEBS
-    # demo / dev not recommended in production    
+    # demo / dev not recommended in production  
+    # The default OpenEBS helm chart will only install Local PV hostpath and Jiva data engines.
     - name: Install openebs default storage (if required)
       shell: "{{ item }}"
       with_items:
         - kubectl create ns openebs
         - helm repo add openebs https://openebs.github.io/charts
         - helm repo update
-        - helm install --namespace openebs openebs openebs/openebs
+        - helm install --namespace openebs openebs/openebs
       when: "'default' not in sc.stdout"
 
     - name: Set openEBs as default storageclass
