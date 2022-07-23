@@ -104,11 +104,7 @@
   tags: kubeconfig
   
   tasks:
-    - name: Install jq 
-      apt:
-        name: jq
-      when: ansible_distribution == "Ubuntu"
-
+    # Install kubectl on Ansible server
     - name: Install kubectl
       raw: snap install kubectl --channel=1.21/stable --classic
 
