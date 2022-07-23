@@ -4,8 +4,6 @@
   gather_facts: true
   tags: 
    - storage
-  vars:
-    ansible_python_interpreter: /usr/bin/python3
     
   tasks:
     - name: PreReq Yq
@@ -19,7 +17,7 @@
       ignore_errors: true
 
     # Install OpenEBS
-    # demo / dev but not recommended in production    
+    # demo / dev not recommended in production    
     - name: Install openebs default storage (if required)
       shell: "{{ item }}"
       with_items:

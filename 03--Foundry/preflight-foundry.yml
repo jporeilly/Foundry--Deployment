@@ -91,7 +91,6 @@
   become_method: sudo
   gather_facts: true
   any_errors_fatal: true
-
   tags: kubeconfig
   
   tasks:
@@ -105,6 +104,7 @@
         state: directory
       become: false
 
+    # Transfer root/.kube/config from master-node-01 over to Ansible Controller /root/.kube/config
     - name: Transfer config file from master cluster to 'root' .kube on Ansible Controller
       raw: scp -i {{ ansible_ssh_private_key_file }} {{ ansible_user }}@{{ groups['kube-master'][0] }}:/home/{{ ansible_user }}/.kube/config ~/.kube/config
       become: false
@@ -142,12 +142,13 @@
       debug:
         msg: "{{ nodes.stdout_lines }}"
 
+    # Test kubectl config
     - name: Check kubectl connectivity from installer node to cluster
       shell: "kubectl get pods -n kube-system"
       register: pods
       become: false
 
-    # Display the Pods
+    # Display Pods in kube-system
     - name: Show output from command --> kubectl get pods -n kube-system
       debug:
         msg: "{{ pods.stdout_lines }}"
