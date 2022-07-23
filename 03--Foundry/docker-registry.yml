@@ -137,6 +137,9 @@
      csr_path: "{{ certificate_dir }}/{{ server_hostname }}/registry.csr"
      provider: selfsigned
 
+  - name: Allow self-signed Registry
+    shell: |
+     sed -i "s! }!, \"insecure-registries\" : [\"{{ groups['installer'][0] }}:5000\"]}!1" /etc/docker/daemon.json
 
   - name: Create Docker-Registry directories    
     file:
@@ -153,19 +156,7 @@
 
 
 
-    - block:
-      - name: Create local certificate
-        shell: |
-          cd ~{{ local_user }};
-          mkdir -p certs;
-          # openssl 1.1.1
-          openssl req -newkey rsa:4096 -nodes -sha256 -keyout certs/domain.key -x509 -days 365 -out certs/domain.crt -subj "/CN=dockerhost" -addext "subjectAltName=DNS:{{ groups['installer'][0] }}"
-        tags: 
-         - certs
 
-      - name: Allow self-signed Registry
-        shell: |
-          sed -i "s! }!, \"insecure-registries\" : [\"{{ groups['installer'][0] }}:5000\"]}!1" /etc/docker/daemon.json
 
 
       - name: Build registry service
@@ -198,9 +189,8 @@
         failed_when: '"{{ groups[''installer''][0] }}" not in docker_insecure.stdout'
       when: '"{{ registry_domain }}" == "{{ groups[''installer''][0] }}"'
 
-# Switch to Nodes
-# Allow the nodes of the cluster to access the Registry with certificate
-- name: Create Registry Cert path on cluster
+# Enable Cluster Nodes to access the Registry with certificate
+- name: Access Docker Registry
   hosts: "{{ groups['kube-node']}}"
   become: true
   become_method: sudo
@@ -210,8 +200,7 @@
   tags: 
    - never
    - continue
-  # Only when the Registry is installed on the installer node.
-  # Otherwise, its assumed the registry is external and already defined.
+
 
   tasks:
     - block:
