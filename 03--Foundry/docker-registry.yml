@@ -99,4 +99,3 @@
         path: /usr/local/bin/docker-compose
         owner: "{{ ansible_user }}"
         group: "{{ ansible_user }}"
-
