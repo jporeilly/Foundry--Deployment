@@ -83,8 +83,16 @@
       shell: "cp ~/.kube/config /home/{{ ansible_user }}/.kube/"
 
     # Take ownership
-    - name: Change config ownership to {{ ansible_user }}
-      shell: "chown -R {{ ansible_user }}:{{ ansible_user }} /home/{{ ansible_user }}/.kube/config"
+    #- name: Change config ownership to {{ ansible_user }}
+    #  shell: "chown -R {{ ansible_user }}:{{ ansible_user }} /home/{{ ansible_user }}/.kube/config"
+
+    # Take ownership
+    - name: Change file ownership, group and permissions
+      file:
+        path: /home/{{ ansible_user }}/.kube/config
+        owner: {{ ansible_user }}
+        group: {{ ansible_user }}
+        mode: '0644'
 
 # Switch to Ansible Controller
 # Setup kubectl for local user and root by copying from the cluster
