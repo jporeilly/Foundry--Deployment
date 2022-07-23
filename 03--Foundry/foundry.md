@@ -2,7 +2,7 @@
 
 Ansible playbooks install and configures Hitachi Vantara Foundry Platform.
 
-Prerequisites for the AlamLinux machines:
+Prerequisites:
 * A public key generated on your Ansible Controller
 * SSH passwordless access on Nodes with root permissions
 * Completed 01 Infrastructure section
@@ -12,27 +12,25 @@ The following playbooks are run:
 
 #### preflight-foundry.yml
 * Update packages
-* Install Helm - all Nodes
 * Prepare kubeconfig
-* Install jq
 * Install kubectl
 * Configure kubectl for 'installer' access
 
 #### docker-registry.yml
 * Install Docker
-* Configure a Docker insecure Registry - Ansible Controller
-* Copy over certs to 'installer'
+* Configure a local private Docker Registry - Ansible Controller
+* Copy over certs to 'installer' & Cluster Nodes
 
 #### storage-class.yml
 * Install OpenEBS storage class
 
 #### deploy-foundry.yml
-* Creates a Log directory
-* Creates a Foundry directory
-* Unarchives Foundry Control Plane 2.4.0
-* Creates a Metrics directory
-* Unarchives Metrics 1.0.0
-* Installs Cluster Services
+* Create a Log directory
+* Create a Foundry directory
+* Unarchive Foundry Control Plane 2.4.0
+* Create a Metrics directory
+* Unarchive Metrics 1.0.0
+* Install Cluster Services
 * Run Hitachi CRDs
 * Install Foundry Control Plane
 * Upload Foundry charts & images
@@ -55,15 +53,29 @@ ansible-playbook -i hosts-skytap.yml --extra-vars="@extra-vars.yml" -b -v prefli
 ---
 
 <em>Run the playbook - docker-registry.yml</em>      
-This will update, install and configure the various required packages for the Foundry Platform.
+This install and configure a local private Docker Registry.
  
 
-``run the playbook - preflight-foundry.yml:`` 
+``run the playbook - docker-registry.yml:`` 
 ```
 cd
 cd /etc/ansible/playbooks
-ansible-playbook -i hosts-skytap.yml --extra-vars="@extra-vars.yml" -b -v preflight-foundry.yml
+ansible-playbook -i hosts-skytap.yml --extra-vars="@extra-vars.yml" -b -v docker-registry.yml
 ```
+
+---
+
+<em>Run the playbook - storage-class.yml</em>      
+sets the storageclass.
+
+``run the playbook - storage-class.yml:`` 
+```
+cd
+cd /etc/ansible/playbooks
+ansible-playbook -i hosts-skytap.yml --extra-vars="@extra-vars.yml" -b -v storage-class.yml
+```
+
+---
 
 <em>Configure Registry</em>  
 Notice that the last few playbooks haven't run.  To complete the playbook tasks:
