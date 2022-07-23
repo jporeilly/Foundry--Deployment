@@ -1,4 +1,5 @@
 ---
+## Copy over .kube/config from the master-node-01 to the Ansible Controller installer.
 # Preflight - Foundry platform
 - name: Preflight Foundry Cluster
   hosts:  "{{ groups['kube-node'] }}"
@@ -70,6 +71,7 @@
   tags: kubeconfig
   
   tasks:
+    # Create /home/k8s/.kube directory on master-node-01
     - name: Create ~/.kube directory (as 'root' on master-node-01)
       file:
         path: ~/.kube
