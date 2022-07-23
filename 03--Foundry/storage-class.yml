@@ -1,4 +1,7 @@
-- name: Install Storage Class - if required
+---
+# OpenEBS turns any storage available to Kubernetes worker nodes into 
+# Local or Distributed Kubernetes Persistent Volumes.
+- name: Install OpenEBS
   hosts: "{{ groups['installer'][0] }}"
   become: false
   gather_facts: true
@@ -20,12 +23,7 @@
     # Demo / Dev not recommended in production  
     # The default OpenEBS helm chart will only install Local PV hostpath and Jiva data engines.
     - name: Install OpenEBS default storage (if required)
-      shell: "{{ item }}"
-      with_items:
-        - kubectl create ns openebs
-        - helm repo add openebs https://openebs.github.io/charts
-        - helm repo update
-        - helm install --namespace openebs openebs/openebs
+      shell: kubectl apply -f https://openebs.github.io/charts/openebs-operator.yaml
       when: "'default' not in sc.stdout"
 
     # Set OpenEBS as default storageclass
