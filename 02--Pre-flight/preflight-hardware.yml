@@ -1,4 +1,5 @@
 ---
+## Kubespray takes care of the Kubernetes preflight requirements.
 # Preflight - Hardware 
 - name: Configure Cluster Nodes
   hosts: "{{ groups['kube-node'] }}"
@@ -11,8 +12,6 @@
     ansible_ssh_private_key_file: "~/.ssh/id_rsa"
     ansible_ssh_private_key_file_name: "id_rsa"
     ansible_user: k8s
-
-    ansible_python_interpreter: /usr/bin/python3
  
   tasks:
    # Ping Nodes
@@ -32,16 +31,6 @@
      tags: 
       - updates
       
-   # Elasticsearch requires a max map count > 262144
-   # Details: https://www.elastic.co/guide/en/elasticsearch/reference/current/vm-max-map-count.html
-   - name: Expand max_map_count 
-     shell: |
-       echo "vm.max_map_count=262144" >> /etc/sysctl.d/sysctl.conf
-       sysctl -p
-     register: max_map_count
-     tags: 
-      - elastic
-
    # Remove Docker and PodMan to prevent runc conflicts
    - name: Remove Docker and Podman
      dnf:
@@ -70,7 +59,7 @@
      yum:
       autoremove: yes
 
-    # easy option :)  Otherwise open Master / Worker ports for network - Calico 
+    # easy option :)  Once Foundry installed open Master / Worker ports for network - Calico 
    - name: Turn off firewall for kubernetes Install
      command: systemctl disable firewalld
 
